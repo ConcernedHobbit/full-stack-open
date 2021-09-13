@@ -1,0 +1,18 @@
+selain->palvelin: HTTP GET /spa
+palvelin-->selain: HTML-sisältö
+selain->palvelin: HTTP GET /main.css
+palvelin-->selain: main.css
+selain->palvelin: HTTP GET /spa.js
+palvelin-->selain: spa.js
+
+note over selain:
+ js-koodi pyytää JSON-dataa
+end note
+
+selain->palvelin: HTTP GET /data.json
+palvelin-->selain: [{ content: "I'm a note", date: "2021-09-14" }, ...]
+
+note over selain:
+ selain suorittaa tapahtumankäsittelijän
+ joka piirtää/lisää muistiinpanot näytölle
+end note

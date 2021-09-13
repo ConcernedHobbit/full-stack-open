@@ -1,0 +1,36 @@
+note over selain:
+ käyttäjä täyttää lomakkeen
+ ja painaa tallenna-nappia
+end note
+
+selain->palvelin: HTTP POST /new_note {note: "Note text"}
+
+note over palvelin:
+ palvelin lisää uuden muistiinpanon taulukkoon
+end note
+
+palvelin-->selain: HTTP 302, Location: /notes
+
+note over selain:
+ selain noudattaa kehoitusta 
+ ja lataa sivun /notes
+end note
+
+selain->palvelin: HTTP GET /notes
+palvelin-->selain: HTML-sisältö
+selain->palvelin: HTTP GET /main.css
+palvelin-->selain: main.css
+selain->palvelin: HTTP GET /main.js
+palvelin-->selain: main.js
+
+note over selain:
+ js-koodi pyytää JSON-dataa
+end note
+
+selain->palvelin: HTP GET /data.json
+palvelin-->selain: [..., { content: "Note text", date: "2021-09-14" }, ...}
+
+note over selain:
+ selain suorittaa tapahtumankäsittelijän
+ joka piirtää/lisää muistiinpanot näytölle
+end note

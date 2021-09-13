@@ -1,0 +1,16 @@
+note over selain:
+ käyttäjä täyttää lomakkeen
+ ja painaa tallenna-nappia
+   
+ selain suorittaa tapahtumankäsittelijän
+ joka piirtää/lisää muistiinpanon näytölle
+ ja lähettää sen palvelimelle
+end note
+
+selain->palvelin: HTTP POST /new_note_spa, Content-type: application/json, {content: "Note text", date: "2021-09-14"}
+
+note over palvelin:
+ palvelin lisää uuden muistiinpanon taulukkoon
+end note
+
+palvelin-->selain: HTTP 201
