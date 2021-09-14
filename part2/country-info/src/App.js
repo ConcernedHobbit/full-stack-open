@@ -3,15 +3,21 @@ import axios from 'axios'
 
 const Weather = ({city}) => {
   const [ weather, setWeather ] = useState([])
+  const [ weatherLoadingFailed, setWeatherLoadingFailed ] = useState(false)
 
   useEffect((city) => {
     axios
       .get(`https://wttr.in/${city}?format=j1`)
       .then(response => {
+        if (weatherLoadingFailed) setWeatherLoadingFailed(false)
         setWeather(response.data)
+      })
+      .catch(error => {
+        setWeatherLoadingFailed(true)
       })
   }, [])
 
+  if (weatherLoadingFailed) return <div><h2>Weather in {city}</h2><p>Failed to load weather</p></div>
   if (weather.length === 0) return <div><h2>Weather in {city}</h2><p>Loading...</p></div>
   const currentCondition = weather.current_condition[0]
 
