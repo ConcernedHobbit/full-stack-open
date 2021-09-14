@@ -1,6 +1,31 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
+const Weather = ({city}) => {
+  const [ weather, setWeather ] = useState([])
+
+  useEffect((city) => {
+    axios
+      .get(`https://wttr.in/${city}?format=j1`)
+      .then(response => {
+        setWeather(response.data)
+      })
+  }, [])
+
+  if (weather.length === 0) return <div><h2>Weather in {city}</h2><p>Loading...</p></div>
+  const currentCondition = weather.current_condition[0]
+
+  return (
+    <div>
+      <h2>Weather in {city}</h2>
+      <p><strong>{currentCondition.weatherDesc[0].value}</strong></p>
+      <p>The temperature is {currentCondition.temp_C}°C (feels like {currentCondition.FeelsLikeC}°C)</p>
+      <p>Wind speed is {currentCondition.windspeedKmph}km/h {currentCondition.winddir16Point}</p>
+      <p>The humidity is {currentCondition.humidity}%</p>
+    </div>
+  )
+}
+
 const Country = ({country}) => {
   const alternativeText = `The flag of ${country.name}`
 
@@ -16,6 +41,8 @@ const Country = ({country}) => {
         { country.languages.map(lang => <li key={lang.iso639_2}>{lang.name} ({lang.nativeName})</li>) }
       </ul>
       <img alt={alternativeText} src={country.flag} height="256"/>
+
+      <Weather city={country.capital} />
     </div>
   )
 }
