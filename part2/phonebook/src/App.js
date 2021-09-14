@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import contactService from './services/contacts'
 
 const Filter = ({filter, handleFilterChange}) => {
   return (
@@ -57,11 +58,7 @@ const App = () => {
   const handleFilterChange = (event) => setFilter(event.target.value)
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/contacts')
-      .then(response => {
-          setContacts(response.data)
-      })
+    contactService.getAll().then(data => setContacts(data))
   }, [])
 
   const addContact = ({event, newName, newNumber}) => {
@@ -78,10 +75,10 @@ const App = () => {
       number: newNumber
     }
 
-    axios
-      .post('http://localhost:3001/contacts', newContact)
+    contactService
+      .create(newContact)
       .then(response => {
-        setContacts(contacts.concat(response.data))
+        setContacts(contacts.concat(response))
         return true
       })
       .catch(error => {
