@@ -1,14 +1,14 @@
 {
   "contacts": [
     {
-      "id": 1,
-      "name": "Arto Hellas",
-      "number": "0118 999 881 999 119 7253"
+      "name": "Erkki Kaila",
+      "number": "0118 999 881 999 119 7253",
+      "id": 1
     },
     {
-      "id": 2,
-      "name": "Erkki Kaila",
-      "number": "044 1233465"
+      "name": "Arto Hellas",
+      "number": "044 12345678",
+      "id": 2
     }
   ]
 }
