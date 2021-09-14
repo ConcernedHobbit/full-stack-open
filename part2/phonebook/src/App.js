@@ -78,8 +78,17 @@ const App = () => {
       number: newNumber
     }
 
-    setContacts(contacts.concat(newContact))
-    return true
+    axios
+      .post('http://localhost:3001/contacts', newContact)
+      .then(response => {
+        setContacts(contacts.concat(response.data))
+        return true
+      })
+      .catch(error => {
+        console.error(error)
+        alert('Failed to add contact to database')
+        return false
+      })
   }
 
   return (
