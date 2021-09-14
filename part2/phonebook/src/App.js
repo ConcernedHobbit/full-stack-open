@@ -82,18 +82,30 @@ const App = () => {
   const addContact = ({event, newName, newNumber}) => {
     event.preventDefault()
 
-    const names = contacts.map((contact) => contact.name)
-    if (names.includes(newName)) {
-      alert(`${newName} is already in your contacts`)
-      return false
-    }
-
     const newContact = {
       name: newName,
       number: newNumber
     }
 
-    contactService
+    const names = contacts.map((contact) => contact.name)
+    if (names.includes(newName)) {
+      const confirmation = window.confirm(`${newName} is already in your contacts, replace the old number with a new one?`)
+      if (!confirmation) return false;
+
+      const contactId = contacts.find(contact => contact.name === newName).id
+
+      contactService
+        .update(contactId, newContact)
+        .then(response => {
+          setContacts(contacts.map(contact => contact.id === contactId ? response : contact))
+        })
+        .catch(error => {
+          console.error(error)
+          alert('Failed to update contact number')
+          return false
+        })
+    } else {
+      contactService
       .create(newContact)
       .then(response => {
         setContacts(contacts.concat(response))
@@ -104,6 +116,7 @@ const App = () => {
         alert('Failed to add contact to database')
         return false
       })
+    }
   }
 
   return (
