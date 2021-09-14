@@ -1,8 +1,51 @@
 import React, { useState } from 'react'
 
+const Filter = ({filter, handleFilterChange}) => {
+  return (
+    <div>
+      filter contacts by name: <input value={filter} onChange={handleFilterChange} />
+    </div>
+  )
+}
+
 const Contact = ({contact}) => {
   return (
     <p>{contact.name} {contact.number}</p>
+  )
+}
+
+const ContactList = ({contacts, filter}) => {
+  return (
+    <div>
+      { 
+        contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()))
+                .map(contact => <Contact key={contact.name} contact={contact} />)
+      }
+    </div>
+  )
+}
+
+const ContactForm = ({callback}) => {
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
+
+  const handleNameChange = (event) => setNewName(event.target.value)
+  const handleNumberChange = (event) => setNewNumber(event.target.value)
+
+  const handleCallback = (event) => {
+    const success = callback({event, newName, newNumber})
+
+    if (!success) return;
+    setNewName('')
+    setNewNumber('')
+  }
+
+  return (
+    <form onSubmit={(e) => handleCallback(e)}>
+      <div>name: <input value={newName} onChange={handleNameChange} /></div>
+      <div>number: <input value={newNumber} onChange={handleNumberChange} /></div>
+      <div><button type="submit">add</button></div>
+    </form>
   )
 }
 
@@ -13,22 +56,17 @@ const App = () => {
     { name: 'Dan Abramov', number: '12-43-234345' },
     { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ])
-
-  const [newName, setNewName] = useState('')
-  const [newNumber, setNewNumber] = useState('')
+  
   const [filter, setFilter] = useState('')
-
-  const handleNameChange = (event) => setNewName(event.target.value)
-  const handleNumberChange = (event) => setNewNumber(event.target.value)
   const handleFilterChange = (event) => setFilter(event.target.value)
 
-  const addContact = (event) => {
+  const addContact = ({event, newName, newNumber}) => {
     event.preventDefault()
 
     const names = contacts.map((contact) => contact.name)
     if (names.includes(newName)) {
       alert(`${newName} is already in your contacts`)
-      return
+      return false
     }
 
     const newContact = {
@@ -37,27 +75,19 @@ const App = () => {
     }
 
     setContacts(contacts.concat(newContact))
-    setNewName('')
-    setNewNumber('')
+    return true
   }
 
   return (
     <>
       <h2>Phonebook</h2>
-      <div>filter contacts by name: <input value={filter} onChange={handleFilterChange} /></div>
+      <Filter filter={filter} handleFilterChange={handleFilterChange} />
 
       <h2>Add new contact</h2>
-      <form onSubmit={addContact}>
-        <div>name: <input value={newName} onChange={handleNameChange} /></div>
-        <div>number: <input value={newNumber} onChange={handleNumberChange} /></div>
-        <div><button type="submit">add</button></div>
-      </form>
+      <ContactForm callback={addContact} />
 
       <h2>Contacts</h2>
-      { 
-        contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()))
-                .map(contact => <Contact key={contact.name} contact={contact} />)
-      }
+      <ContactList contacts={contacts} filter={filter} />
     </>
   )
 }
