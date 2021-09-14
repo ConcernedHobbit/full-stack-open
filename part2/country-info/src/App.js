@@ -20,13 +20,13 @@ const Country = ({country}) => {
   )
 }
 
-const CountryList = ({countries}) => {
+const CountryList = ({countries, setFilter}) => {
   if (countries.length === 0) return <div><p>No countries found</p></div>
   if (countries.length > 10) return <div><p>Too many matches to show ({countries.length})</p></div>
   if (countries.length > 1) {
     return (
       <div>
-        { countries.map(country => <p key={country.name}>{country.name} ({country.nativeName})</p>) }
+        { countries.map(country => <p key={country.name}>{country.name} ({country.nativeName}) <button onClick={() => setFilter(country.name)}>show</button></p>) }
       </div>
     )
   }
@@ -52,7 +52,7 @@ const App = () => {
   return (
     <>
       <div>Find countries: <input value={filter} onChange={handleFilterChange} /></div>
-      <CountryList countries={filteredCountries} />
+      <CountryList countries={filteredCountries} setFilter={setFilter} />
     </>
   );
 }
