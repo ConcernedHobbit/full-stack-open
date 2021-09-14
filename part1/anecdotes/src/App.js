@@ -23,10 +23,15 @@ const App = () => {
 
   return (
     <>
+      <h1>Anecdote of the Day</h1>
       <p>{anecdotes[selected]}</p>
       <p>This anecdote has {votes[selected]} votes.</p>
       <button onClick={voteAnecdote}>Vote</button>
       <button onClick={setRandomAnecdote}>Next anecdote</button>
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[
+        Object.keys(votes).reduce((a, b) => votes[a] > votes[b] ? a : b)
+      ]}</p>
     </>
   );
 }
