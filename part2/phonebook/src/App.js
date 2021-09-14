@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 
 const Filter = ({filter, handleFilterChange}) => {
   return (
@@ -50,15 +51,18 @@ const ContactForm = ({callback}) => {
 }
 
 const App = () => {
-  const [contacts, setContacts] = useState([
-    { name: 'Arto Hellas', number: '0118-999-88199-9119-725-3' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
+  const [contacts, setContacts] = useState([])
   
   const [filter, setFilter] = useState('')
   const handleFilterChange = (event) => setFilter(event.target.value)
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/contacts')
+      .then(response => {
+          setContacts(response.data)
+      })
+  }, [])
 
   const addContact = ({event, newName, newNumber}) => {
     event.preventDefault()
