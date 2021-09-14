@@ -12,7 +12,7 @@
 /build
 
 # json database
-db.json
+./db.json
 
 # misc
 .DS_Store

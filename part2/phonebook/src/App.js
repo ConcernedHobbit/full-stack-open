@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import contactService from './services/contacts'
 
 const Filter = ({filter, handleFilterChange}) => {
@@ -10,18 +9,37 @@ const Filter = ({filter, handleFilterChange}) => {
   )
 }
 
-const Contact = ({contact}) => {
-  return (
-    <p>{contact.name} {contact.number}</p>
-  )
-}
+const Contact = ({contact}) => <span>{contact.name} {contact.number}</span>
 
-const ContactList = ({contacts, filter}) => {
+const ContactList = ({contacts, filter, setContacts}) => {
+  const deleteContact = contact => {
+    const confirmation = window.confirm(`Delete ${contact.name}?`)
+    if (!confirmation) return;
+
+    contactService
+      .remove(contact.id)
+      .then(response => {
+        setContacts(
+          contacts.filter(otherContact => otherContact.id !== contact.id)
+        )
+      })
+      .catch(error => {
+        console.error(error)
+        alert(`Failed to delete contact from server`)
+      })
+  }
+
   return (
     <div>
       { 
         contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()))
-                .map(contact => <Contact key={contact.name} contact={contact} />)
+                .map(contact => {
+                  return (
+                    <div key={contact.name}>
+                      <Contact contact={contact} setContacts={setContacts} /> <button onClick={() => deleteContact(contact)}>delete</button>
+                    </div>
+                  )
+                })
       }
     </div>
   )
@@ -97,7 +115,7 @@ const App = () => {
       <ContactForm callback={addContact} />
 
       <h2>Contacts</h2>
-      <ContactList contacts={contacts} filter={filter} />
+      <ContactList contacts={contacts} filter={filter} setContacts={setContacts} />
     </>
   )
 }
