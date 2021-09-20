@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import contactService from './services/contacts'
 import { ContactList, ContactForm } from './components/Contact'
+import Notification from './components/Notification'
+import './index.css'
 
 const Filter = ({filter, handleFilterChange}) => {
   return (
@@ -12,6 +14,9 @@ const Filter = ({filter, handleFilterChange}) => {
 
 const App = () => {
   const [contacts, setContacts] = useState([])
+  const [errorMessage, setErrorMessage] = useState(null)
+
+  const clearErrorMessage = () => { setErrorMessage(null) }
   
   const [filter, setFilter] = useState('')
   const handleFilterChange = (event) => setFilter(event.target.value)
@@ -43,7 +48,8 @@ const App = () => {
         })
         .catch(error => {
           console.error(error)
-          alert('Failed to update contact number')
+          setErrorMessage('Failed to update contact number')
+          setTimeout(clearErrorMessage, 5000)
           return false
         })
     } else {
@@ -55,7 +61,8 @@ const App = () => {
       })
       .catch(error => {
         console.error(error)
-        alert('Failed to add contact to database')
+        setErrorMessage('Failed to add contact to database')
+        setTimeout(clearErrorMessage, 5000)
         return false
       })
     }
@@ -74,13 +81,15 @@ const App = () => {
       })
       .catch(error => {
         console.error(error)
-        alert(`Failed to delete contact from server`)
+        setErrorMessage(`Failed to delete contact from server`)
+        setTimeout(clearErrorMessage, 5000)
       })
   }
 
   return (
     <>
       <h2>Phonebook</h2>
+      <Notification urgency="error" message={errorMessage} />
       <Filter filter={filter} handleFilterChange={handleFilterChange} />
 
       <h2>Add new contact</h2>
