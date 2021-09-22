@@ -1,6 +1,10 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
+const Contact = require('./models/contact')
+const { response } = require('express')
+
 const app = express()
 
 app.use(cors())
@@ -47,37 +51,27 @@ let contacts = [
 ]
 
 app.get('/api/persons', (req, res) => {
-    res.json(contacts)
+    Contact
+        .find({})
+        .then(contacts => {
+            res.json(contacts)
+        })
 })
 
 app.get('/api/persons/:id', (req, res) => {
-    if (isNaN(req.params.id)) {
-        return res.status(400).json({
-            error: 'id should be number'
+    Contact.findById(req.params.id)
+        .then(contact => {
+            res.json(contact)
         })
-    }
-
-    const id = Number(req.params.id)
-    const note = contacts.find(contact => contact.id === id)
-
-    if (note) {
-        res.json(note)
-    } else {
-        res.status(404).end()
-    }
+        .catch(error => {
+            console.log(error)
+            res.status(404).end()
+        })
 })
 
 app.delete('/api/persons/:id', (req, res) => {
-    if (isNaN(req.params.id)) {
-        return res.status(400).json({
-            error: 'id should be number'
-        })
-    }
-
-    const id = Number(req.params.id)
-    contacts = contacts.filter(contact => contact.id !== id)
-
-    res.status(204).end()
+    // Not implemented
+    res.status(501).end()
 })
 
 app.post('/api/persons', (req, res) => {
@@ -95,18 +89,12 @@ app.post('/api/persons', (req, res) => {
         })
     }
 
-    const nameExists = contacts.some(contact => contact.name === body.name)
-    if (nameExists) {
-        return res.status(400).json({
-            error: 'name must be unique'
-        })
-    }
+    let { name, number } = { ... body }
+    const contact = new Contact({ name, number })
 
-    const contact = {
-        id: (Math.random() * Number.MAX_SAFE_INTEGER),
-        name: body.name,
-        number: body.number
-    }
+    contact.save().then(res => {
+        console.log(`added ${res.name} number ${res.number} to phonebook`)
+    })
 
     contacts = contacts.concat(contact)
     res.json(contact)
@@ -116,7 +104,7 @@ app.get('/info', (req, res) => {
     res.send(`<p>Phonebook has info for ${contacts.length} people</p><p>${new Date()}</p>`);
 })
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
