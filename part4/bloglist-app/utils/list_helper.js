@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 const dummy = (blogs) => {
     return 1
 }
@@ -11,8 +12,25 @@ const favoriteBlog = (blogs) => {
     return blogs.sort((a, b) => b.likes - a.likes)[0]
 }
 
+const mostBlogs = (blogs) => {
+    if (blogs.length === 0) return null
+
+    const authors = {}
+    blogs.forEach(blog => {
+        authors[blog.author] = authors[blog.author] ? authors[blog.author] + 1 : 1
+    })
+
+    const mostBlogsAuthor = Object.keys(authors).reduce((a, b) => authors[a] > authors[b] ? a : b)
+
+    return {
+        author: mostBlogsAuthor,
+        blogs: authors[mostBlogsAuthor]
+    }
+}
+
 module.exports = {
     dummy,
     totalLikes,
-    favoriteBlog
+    favoriteBlog,
+    mostBlogs
 }
