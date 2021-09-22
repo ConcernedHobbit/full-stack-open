@@ -1,3 +1,4 @@
+const { response } = require('express')
 const express = require('express')
 const app = express()
 
@@ -26,6 +27,18 @@ const contacts = [
 
 app.get('/api/persons', (req, res) => {
     res.json(contacts)
+})
+
+app.get('/api/persons/:id', (req, res) => {
+    if (isNaN(req.params.id)) res.status(400).end()
+    const id = Number(req.params.id)
+    const note = contacts.find(contact => contact.id === id)
+
+    if (note) {
+        res.json(note)
+    } else {
+        res.status(404).end()
+    }
 })
 
 app.get('/info', (req, res) => {
