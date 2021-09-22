@@ -47,9 +47,9 @@ const App = () => {
           return true
         })
         .catch(error => {
-          console.error(error)
-          setErrorMessage('Failed to update contact number')
-          setTimeout(clearErrorMessage, 5000)
+          console.log(error)
+          setErrorMessage(`${error.response.data.error}`)
+          setTimeout(clearErrorMessage, 10000)
           return false
         })
     } else {
@@ -60,9 +60,9 @@ const App = () => {
         return true
       })
       .catch(error => {
-        console.error(error)
-        setErrorMessage('Failed to add contact to database')
-        setTimeout(clearErrorMessage, 5000)
+        console.log(error)
+        setErrorMessage(`${error.response.data.error}`)
+        setTimeout(clearErrorMessage, 10000)
         return false
       })
     }
@@ -80,9 +80,9 @@ const App = () => {
         )
       })
       .catch(error => {
-        console.error(error)
-        setErrorMessage(`Failed to delete contact from server`)
-        setTimeout(clearErrorMessage, 5000)
+        console.log(error)
+        setErrorMessage(`${error.response.data.error}`)
+        setTimeout(clearErrorMessage, 10000)
       })
   }
 
