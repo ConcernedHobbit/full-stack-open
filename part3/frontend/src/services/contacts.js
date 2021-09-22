@@ -21,4 +21,10 @@ const remove = id => {
     return request
 }
 
-export default { getAll, create, update, remove }
+const exportedObject = {
+    getAll,
+    create,
+    update,
+    remove
+}
+export default exportedObject

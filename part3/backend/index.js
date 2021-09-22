@@ -3,7 +3,6 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const Contact = require('./models/contact')
-const { response } = require('express')
 
 const app = express()
 app.use(express.static('build'))
@@ -14,15 +13,15 @@ morgan.token('body', req => JSON.stringify(req.body))
 
 app.use(
     morgan(
-        'tiny', 
-        { skip: (req, res) => req.method === 'POST' }
+        'tiny',
+        { skip: (req) => req.method === 'POST' }
     )
 )
 
 app.use(
     morgan(
         ':method :url :status :res[content-length] - :response-time ms :body',
-        { skip: (req, res) => req.method !== 'POST' }
+        { skip: (req) => req.method !== 'POST' }
     )
 )
 
@@ -59,7 +58,7 @@ app.get('/info', (req, res, next) => {
 app.delete('/api/persons/:id', (req, res, next) => {
     Contact
         .findByIdAndRemove(req.params.id)
-        .then(result => {
+        .then(res => {
             res.status(204).end()
         })
         .catch(error => next(error))
