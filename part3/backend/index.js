@@ -101,7 +101,6 @@ app.post('/api/persons', (req, res) => {
         console.log(`added ${res.name} number ${res.number} to phonebook`)
     })
 
-    contacts = contacts.concat(contact)
     res.json(contact)
 })
 
