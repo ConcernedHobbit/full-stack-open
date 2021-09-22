@@ -2,6 +2,8 @@ const { response } = require('express')
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
 let contacts = [
     {
         id: 1,
@@ -30,7 +32,12 @@ app.get('/api/persons', (req, res) => {
 })
 
 app.get('/api/persons/:id', (req, res) => {
-    if (isNaN(req.params.id)) res.status(400).end()
+    if (isNaN(req.params.id)) {
+        return res.status(400).json({
+            error: 'id should be number'
+        })
+    }
+
     const id = Number(req.params.id)
     const note = contacts.find(contact => contact.id === id)
 
@@ -42,11 +49,42 @@ app.get('/api/persons/:id', (req, res) => {
 })
 
 app.delete('/api/persons/:id', (req, res) => {
-    if (isNaN(req.params.id)) res.status(400).end()
+    if (isNaN(req.params.id)) {
+        return res.status(400).json({
+            error: 'id should be number'
+        })
+    }
+
     const id = Number(req.params.id)
     contacts = contacts.filter(contact => contact.id !== id)
 
     res.status(204).end()
+})
+
+app.post('/api/persons', (req, res) => {
+    const body = req.body
+    console.log(body)
+
+    if (!body.name)  {
+        return res.status(400).json({
+            error: 'name missing'
+        })
+    }
+
+    if (!body.number) {
+        return res.status(400).json({
+            error: 'number missing'
+        })
+    }
+
+    const contact = {
+        id: (Math.random() * Number.MAX_SAFE_INTEGER),
+        name: body.name,
+        number: body.number
+    }
+
+    contacts = contacts.concat(contact)
+    res.json(contact)
 })
 
 app.get('/info', (req, res) => {
