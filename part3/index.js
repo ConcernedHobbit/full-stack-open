@@ -63,7 +63,6 @@ app.delete('/api/persons/:id', (req, res) => {
 
 app.post('/api/persons', (req, res) => {
     const body = req.body
-    console.log(body)
 
     if (!body.name)  {
         return res.status(400).json({
@@ -74,6 +73,13 @@ app.post('/api/persons', (req, res) => {
     if (!body.number) {
         return res.status(400).json({
             error: 'number missing'
+        })
+    }
+
+    const nameExists = contacts.some(contact => contact.name === body.name)
+    if (nameExists) {
+        return res.status(400).json({
+            error: 'name must be unique'
         })
     }
 
