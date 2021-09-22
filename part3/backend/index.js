@@ -6,10 +6,9 @@ const Contact = require('./models/contact')
 const { response } = require('express')
 
 const app = express()
-
-app.use(cors())
-app.use(express.json())
 app.use(express.static('build'))
+app.use(express.json())
+app.use(cors())
 
 morgan.token('body', req => JSON.stringify(req.body))
 
@@ -27,29 +26,6 @@ app.use(
     )
 )
 
-let contacts = [
-    {
-        id: 1,
-        name: "Arto Hellas",
-        number: "040-123456"
-    },
-    {
-        id: 2,
-        name: "Ada Lovelace",
-        number: "39-44-5323523"
-    },
-    {
-        id: 3,
-        name: "Dan Abramov",
-        number: "12-43-234345"
-    },
-    {
-        id: 4,
-        name: "Mary Poppendick",
-        number: "39-23-5423122"
-    }
-]
-
 app.get('/api/persons', (req, res) => {
     Contact
         .find({})
@@ -58,20 +34,49 @@ app.get('/api/persons', (req, res) => {
         })
 })
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
     Contact.findById(req.params.id)
         .then(contact => {
-            res.json(contact)
+            if (contact) {
+                res.json(contact)
+            } else {
+                res.status(404).end()
+            }
         })
-        .catch(error => {
-            console.log(error)
-            res.status(404).end()
+        .catch(error => next(error))
+})
+
+app.get('/info', (req, res, next) => {
+    Contact
+        .count({}, (error, count) => {
+            if (error) next(error)
+            else {
+                res.send(`<p>Phonebook has ${count} contacts</p><p>${new Date()}</p>`)
+            }
         })
 })
 
-app.delete('/api/persons/:id', (req, res) => {
-    // Not implemented
-    res.status(501).end()
+app.delete('/api/persons/:id', (req, res, next) => {
+    Contact
+        .findByIdAndRemove(req.params.id)
+        .then(result => {
+            res.status(204).end()
+        })
+        .catch(error => next(error))
+})
+
+app.put('/api/persons/:id', (req, res, next) => {
+    const body = req.body
+
+    const { name, number } = { ... body }
+    const contact = { name, number }
+
+    Contact
+        .findByIdAndUpdate(req.params.id, contact, { new: true })
+        .then(updatedContact => {
+            res.json(updatedContact)
+        })
+        .catch(error => next(error))
 })
 
 app.post('/api/persons', (req, res) => {
@@ -100,9 +105,25 @@ app.post('/api/persons', (req, res) => {
     res.json(contact)
 })
 
-app.get('/info', (req, res) => {
-    res.send(`<p>Phonebook has info for ${contacts.length} people</p><p>${new Date()}</p>`);
-})
+const unknownEndpoint = (req, res) => {
+    res.status(404).send({
+        error: 'unknown endpoint'
+    })
+}
+app.use(unknownEndpoint)
+
+const errorHandler = (error, req, res, next) => {
+    console.error(error.message)
+
+    if (error.name === 'CastError') {
+        return res.status(400).send({
+            error: 'malformatted id'
+        })
+    }
+
+    next(error)
+}
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {

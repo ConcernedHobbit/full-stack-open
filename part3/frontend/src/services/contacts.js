@@ -12,8 +12,6 @@ const create = newContact => {
 }
 
 const update = (id, newContact) => {
-    console.error(`contacts.update not implemented`)
-    return Promise.reject()
     const request = axios.put(`${baseURL}/${id}`, newContact)
     return request.then(response => response.data)
 }
