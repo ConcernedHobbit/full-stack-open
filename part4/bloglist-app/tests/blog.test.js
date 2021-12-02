@@ -83,7 +83,8 @@ describe('post /api/blogs', () => {
             .send(newBlog)
             .expect(201)
 
-        const blog = await Blog.findOne({ title: 'Firetrucks Fan Page' })
+        const blogs = await helper.allBlogs()
+        const blog = blogs.find(blog => blog.title === 'Firetrucks Fan Page')
         expect(blog.likes).toBe(0)
     })
 
@@ -118,6 +119,34 @@ describe('delete /api/blogs/:id', () => {
 
         const titles = blogsAtEnd.map(blog => blog.title)
         expect(titles).not.toContain(toDelete.title)
+    })
+})
+
+describe('patch /api/blogs/:id', () => {
+    test('blog can be updated', async () => {
+        const blogsAtStart = await helper.allBlogs()
+        const toUpdate = blogsAtStart[0]
+        const id = toUpdate.id
+        const newLikes = toUpdate.likes + 10
+
+        await api
+            .patch(`/api/blogs/${id}`)
+            .send({
+                likes: newLikes
+            })
+            .expect(200)
+
+        const blogsAtEnd = await helper.allBlogs()
+
+        expect(blogsAtEnd).toHaveLength(
+            helper.initialBlogs.length
+        )
+
+        const blog = blogsAtEnd.find(blog => blog.id === id)
+        expect(blog.title).toBe(toUpdate.title)
+        expect(blog.author).toBe(toUpdate.author)
+        expect(blog.likes).toBe(newLikes)
+        expect(blog.url).toBe(toUpdate.url)
     })
 })
 
