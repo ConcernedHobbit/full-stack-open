@@ -37,6 +37,37 @@ describe('get /api/blogs', () => {
     })
 })
 
+describe('post /api/blogs', () => {
+    test('blog can be added', async () => {
+        await Blog.create({
+            title: 'Barty\'s best tips',
+            author: 'Barty Fakeguy',
+            url: 'https://bartystips.kdl',
+            likes: 7
+        })
+
+        const res = await api.get('/api/blogs')
+        expect(res.body).toHaveLength(
+            helper.initialBlogs.length + 1
+        )
+    })
+
+    test('added blog has right content', async () => {
+        const newBlog = {
+            title: 'Firehoses and Hose Tips',
+            author: 'Firefighter Jenny',
+            url: 'https://hoses.klf',
+            likes: 17
+        }
+
+        await Blog.create(newBlog)
+
+        const blogs = await helper.allBlogs()
+        const titles = blogs.map(blog => blog.title)
+        expect(titles).toContain(newBlog.title)
+    })
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
