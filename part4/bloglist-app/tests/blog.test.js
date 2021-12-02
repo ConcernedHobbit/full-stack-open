@@ -150,6 +150,32 @@ describe('patch /api/blogs/:id', () => {
     })
 })
 
+describe('put /api/blogs/:id', () => {
+    test('blog can be replaced', async () => {
+        const blogsAtStart = await helper.allBlogs()
+        const toReplaceID = blogsAtStart[0].id
+
+        const newBlog = {
+            title: 'Firefighting Tips from a Pro',
+            author: 'Sergeant Fireperson',
+            url: 'https://fireprotips.gkj',
+            likes: 91
+        }
+
+        await api
+            .put(`/api/blogs/${toReplaceID}`)
+            .send(newBlog)
+            .expect(200)
+
+        const blogsAtEnd = await helper.allBlogs()
+        const blog = blogsAtEnd.find(blog => blog.id === toReplaceID)
+        expect(blog.title).toBe(newBlog.title)
+        expect(blog.author).toBe(newBlog.author)
+        expect(blog.url).toBe(newBlog.url)
+        expect(blog.likes).toBe(newBlog.likes)
+    })
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
