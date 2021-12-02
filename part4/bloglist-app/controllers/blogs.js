@@ -7,10 +7,18 @@ blogsRouter.get('/', async (_req, res) => {
 })
 
 blogsRouter.post('/', async (req, res) => {
-    const blog = new Blog(req.body)
+    if (!req.body.title && !req.body.url) {
+        res
+            .status(400)
+            .json({
+                error: 'Blog must have either a title or an URL'
+            })
+    } else {
+        const blog = new Blog(req.body)
 
-    const result = await blog.save()
-    res.status(201).json(result)
+        const result = await blog.save()
+        res.status(201).json(result)
+    }
 })
 
 module.exports = blogsRouter

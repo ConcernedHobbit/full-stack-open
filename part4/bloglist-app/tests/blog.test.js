@@ -83,6 +83,18 @@ describe('post /api/blogs', () => {
         const blog = await Blog.findOne({title: 'Firetrucks Fan Page'})
         expect(blog.likes).toBe(0)
     })
+
+    test('adding blog without title and url responds with bad request', async () => {
+        const newBlog = {
+            author: 'Karth McIndecisive',
+            likes: 3
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(400)
+    })
 })
 
 afterAll(() => {
