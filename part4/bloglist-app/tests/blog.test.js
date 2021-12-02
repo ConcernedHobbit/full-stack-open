@@ -60,7 +60,9 @@ describe('post /api/blogs', () => {
             likes: 17
         }
 
-        await Blog.create(newBlog)
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
 
         const blogs = await helper.allBlogs()
         const titles = blogs.map(blog => blog.title)
@@ -74,7 +76,9 @@ describe('post /api/blogs', () => {
             url: 'https://firetr.ucks'
         }
 
-        await Blog.create(newBlog)
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
 
         const blog = await Blog.findOne({title: 'Firetrucks Fan Page'})
         expect(blog.likes).toBe(0)
