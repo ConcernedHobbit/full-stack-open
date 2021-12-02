@@ -47,6 +47,7 @@ describe('post /api/blogs', () => {
         })
 
         const res = await api.get('/api/blogs')
+
         expect(res.body).toHaveLength(
             helper.initialBlogs.length + 1
         )
@@ -63,6 +64,7 @@ describe('post /api/blogs', () => {
         await api
             .post('/api/blogs')
             .send(newBlog)
+            .expect(201)
 
         const blogs = await helper.allBlogs()
         const titles = blogs.map(blog => blog.title)
@@ -79,6 +81,7 @@ describe('post /api/blogs', () => {
         await api
             .post('/api/blogs')
             .send(newBlog)
+            .expect(201)
 
         const blog = await Blog.findOne({ title: 'Firetrucks Fan Page' })
         expect(blog.likes).toBe(0)
@@ -94,6 +97,27 @@ describe('post /api/blogs', () => {
             .post('/api/blogs')
             .send(newBlog)
             .expect(400)
+    })
+})
+
+describe('delete /api/blogs/:id', () => {
+    test('blog can be deleted', async () => {
+        const blogsAtStart = await helper.allBlogs()
+        const toDelete = blogsAtStart[0]
+        const id = toDelete.id
+
+        await api
+            .delete(`/api/blogs/${id}`)
+            .expect(204)
+
+        const blogsAtEnd = await helper.allBlogs()
+
+        expect(blogsAtEnd).toHaveLength(
+            helper.initialBlogs.length - 1
+        )
+
+        const titles = blogsAtEnd.map(blog => blog.title)
+        expect(titles).not.toContain(toDelete.title)
     })
 })
 
