@@ -80,7 +80,7 @@ describe('post /api/blogs', () => {
             .post('/api/blogs')
             .send(newBlog)
 
-        const blog = await Blog.findOne({title: 'Firetrucks Fan Page'})
+        const blog = await Blog.findOne({ title: 'Firetrucks Fan Page' })
         expect(blog.likes).toBe(0)
     })
 
