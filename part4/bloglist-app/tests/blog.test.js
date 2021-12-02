@@ -66,6 +66,19 @@ describe('post /api/blogs', () => {
         const titles = blogs.map(blog => blog.title)
         expect(titles).toContain(newBlog.title)
     })
+
+    test('adding blog without likes sets likes to 0', async () => {
+        const newBlog = {
+            title: 'Firetrucks Fan Page',
+            author: 'Driver Kayla',
+            url: 'https://firetr.ucks'
+        }
+
+        await Blog.create(newBlog)
+
+        const blog = await Blog.findOne({title: 'Firetrucks Fan Page'})
+        expect(blog.likes).toBe(0)
+    })
 })
 
 afterAll(() => {
