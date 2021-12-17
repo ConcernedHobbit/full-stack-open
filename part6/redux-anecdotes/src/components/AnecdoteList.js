@@ -4,7 +4,14 @@ import { getId, createNotification, removeNotification } from '../reducers/notif
 import { useSelector, useDispatch } from 'react-redux'
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector(state => state.anecdotes)
+  const anecdotes = useSelector(state => {
+    return state.anecdotes.filter(
+      anecdote => 
+      anecdote.content
+        .toLowerCase()
+        .includes(state.filter.toLowerCase())
+    )
+  })
   const dispatch = useDispatch()
 
   const vote = (id) => {
@@ -23,19 +30,30 @@ const AnecdoteList = () => {
     }, 5 * 1000)
   }
 
+  if (anecdotes.length === 0) {
+    return (
+      <div className='anecdotes'>
+        <i>an empty list is as useful as your imagination</i>
+      </div>
+    )
+  }
+
   return (
     <div className='anecdotes'>
-      {anecdotes.sort((a1, a2) => a2.votes - a1.votes).map(anecdote =>
-        <div key={anecdote.id} className='anecdote'>
-          <div>
-            {anecdote.content}
+      {anecdotes
+        .sort((a1, a2) => a2.votes - a1.votes)
+        .map(anecdote =>
+          <div key={anecdote.id} className='anecdote'>
+            <div>
+              {anecdote.content}
+            </div>
+            <div>
+              has {anecdote.votes}
+              <button onClick={() => vote(anecdote.id)}>vote</button>
+            </div>
           </div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
-          </div>
-        </div>
-      )}
+        )
+      }
     </div>
   )
 }

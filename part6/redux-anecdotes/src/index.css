@@ -82,7 +82,7 @@ form > button {
   margin-top: 5px;
 }
 
-.anecdote-form, .anecdotes {
+.anecdote-form, .anecdotes, .filter-container {
   margin: 5px 0;
   padding: 2px;
   width: max-content;
@@ -132,4 +132,12 @@ form > button {
 
 .notif-created {
   background-color: rgba(255, 32, 218, 0.2)
+}
+
+.filter-container {
+  background-color: rgba(167, 83, 206, 0.2)
+}
+
+.filter-container label {
+  margin-right: 1ch;
 }
