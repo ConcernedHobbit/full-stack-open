@@ -78,10 +78,37 @@ body {
   padding: 5px;
 }
 
-div > button {
-  margin-left: 1em;
-}
-
 form > button {
   margin-top: 5px;
+}
+
+.anecdote-form, .anecdotes {
+  margin: 5px 0;
+  padding: 2px;
+  width: max-content;
+}
+
+.anecdotes {
+  background-color: rgb(59, 48, 212, .2);
+  overflow-wrap: break-word;
+  max-width: calc(100vw - 10px)
+}
+
+.anecdotes .anecdote {
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  margin-bottom: 5px;
+}
+
+.anecdotes .anecdote:last-child {
+  border-bottom: none;
+}
+
+.anecdote button {
+  background: rgba(0, 0, 0, .2);
+  border: 1px solid black;
+  margin-left: 1ch;
+}
+
+.anecdote-form {
+  background-color: rgba(109, 176, 110, .2);
 }
