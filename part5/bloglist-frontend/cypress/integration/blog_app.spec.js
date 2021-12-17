@@ -35,4 +35,27 @@ describe('Blog app', function() {
       cy.get('.notification.error').should('contain', 'failed to log in')
     })
   })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.request('POST', 'http://localhost:3003/api/login', {
+        username: 'theboywholived',
+        password: 'lily'
+      }).then(response => {
+        localStorage.setItem('logged_in', JSON.stringify(response.body))
+      })
+
+      cy.visit('http://localhost:3000')
+    })
+
+    it('a blog can be created', function() {
+      cy.contains('create new blog').click()
+      cy.get('#blog-title').type('Tales from Hogwarts')
+      cy.get('#blog-author').type('The Boy Who Lived')
+      cy.get('#blog-url').type('talesfrom.hogwarts')
+      cy.get('#create-blog').click()
+
+      cy.contains('Tales from Hogwarts by The Boy Who Lived')
+    })
+  })
 })
