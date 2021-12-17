@@ -77,7 +77,10 @@ const App = () => {
         level: 'success'
       })
     } catch (exception) {
-      console.error(exception)
+      notify({
+        message: 'failed to add blog',
+        level: 'error'
+      })
     }
   }
 
