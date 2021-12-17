@@ -22,4 +22,10 @@ const create = async blog => {
   return request.data
 }
 
-export default { setToken, getAll, create }
+const update = async ({ id, blog }) => {
+  const request = await axios.patch(`${baseUrl}/${id}`, blog, config())
+  return request.data
+}
+
+const exports = { setToken, getAll, create, update }
+export default exports

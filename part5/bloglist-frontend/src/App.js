@@ -71,6 +71,30 @@ const App = () => {
     }
   }
 
+  const handleLike = async (blog) => {
+    try {
+      const updatedBlog = await blogService.update({
+        id: blog.id,
+        blog: {
+          likes: blog.likes + 1
+        }
+      })
+
+      blogs.find(b => b.id === blog.id).likes = updatedBlog.likes
+
+      notify({
+        message: `liked blog ${blog.title}`,
+        level: 'success'
+      })
+
+    } catch (exception) {
+      notify({
+        message: 'failed to like blog',
+        level: 'error'
+      })
+    }
+  }
+
   const logOut = () => {
     window.localStorage.removeItem('logged_in')
     setUser(null)
@@ -85,7 +109,7 @@ const App = () => {
     <div className='blogs'>
       <h2>all blogs</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLike={handleLike} />
       )}
     </div>
   )

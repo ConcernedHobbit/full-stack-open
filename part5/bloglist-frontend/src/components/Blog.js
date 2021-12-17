@@ -1,9 +1,15 @@
 import React, { useState } from 'react'
 
-const Blog = ({blog}) => {
+const Blog = ({ blog, handleLike }) => {
   const [visible, setVisible] = useState(false)
+
   const toggleVisibility = () => {
     setVisible(!visible)
+  }
+
+  const like = (event) => {
+    event.preventDefault()
+    handleLike(blog)
   }
 
   if (visible) {
@@ -13,7 +19,7 @@ const Blog = ({blog}) => {
           <span className='title'>{blog.title}</span> by <span className='author'>{blog.author}</span> 
         </p>
         <p>{blog.url}</p>
-        <p>{blog.likes} likes <button>like</button></p>
+        <p>{blog.likes} likes <button onClick={like}>like</button></p>
         <p>{blog.user.name}</p>
       </div>  
     )

@@ -96,7 +96,9 @@ blogsRouter.patch('/:id', async (req, res) => {
             })
     }
 
-    if (blog.user?.toString() !== req.user.id.toString()) {
+    const body = req.body
+
+    if ((body.title || body.author || body.url) && blog.user?.toString() !== req.user.id.toString()) {
         return res
             .status(401)
             .json({
@@ -104,7 +106,6 @@ blogsRouter.patch('/:id', async (req, res) => {
             })
     }
 
-    const body = req.body
     if (body.title) blog.title = body.title
     if (body.author) blog.author = body.author
     if (body.url) blog.url = body.url
