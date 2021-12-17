@@ -6,7 +6,7 @@ const NotificationList = () =>{
   const notifications = useSelector(state => state.notifications)
 
   return (
-    <div>
+    <div className='notifications'>
       {notifications.map(notification => (
         <Notification
           key={notification.id}

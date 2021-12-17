@@ -91,7 +91,7 @@ form > button {
 .anecdotes {
   background-color: rgb(59, 48, 212, .2);
   overflow-wrap: break-word;
-  max-width: calc(100vw - 10px)
+  max-width: calc(100vw - 10px);
 }
 
 .anecdotes .anecdote {
@@ -113,13 +113,20 @@ form > button {
   background-color: rgba(109, 176, 110, .2);
 }
 
+.notifications {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+
 .notification {
   border: solid 1px;
   padding: 5px;
   width: max-content;
   margin-bottom: 5px;
   overflow-wrap: break-word;
-  max-width: calc(100vw - 10px)
+  max-width: 30vw;
+  margin-left: auto;
 }
 
 .notification:last-child {
