@@ -26,13 +26,19 @@ export const createNotification = ({ message, className, timeout }) => {
     })
 
     setTimeout(() => {
-      dispatch({
-        type: 'REMOVE_NOTIFICATION',
-        data: {
-          id
-        }
-      })
-    }, timeout || 5000)
+        dispatch(removeNotification(id))
+      }, 
+      timeout || 5000
+    )
+  }
+}
+
+export const removeNotification = (id) => {
+  return {
+    type: 'REMOVE_NOTIFICATION',
+    data: {
+      id
+    }
   }
 }
 

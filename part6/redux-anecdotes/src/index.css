@@ -127,6 +127,7 @@ form > button {
   overflow-wrap: break-word;
   max-width: 30vw;
   margin-left: auto;
+  cursor: pointer;
 }
 
 .notification:last-child {

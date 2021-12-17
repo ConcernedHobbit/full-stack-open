@@ -12,6 +12,7 @@ const NotificationList = (props) =>{
           key={notification.id}
           message={notification.message}
           className={notification.className}
+          id={notification.id}
         />
       ))}
     </div>
