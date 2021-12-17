@@ -27,6 +27,7 @@ const LoginForm = ({ handleLogin }) => {
         <div>
           <label>username</label>
           <input
+            id="username"
             type="text"
             value={username}
             name="Username"
@@ -36,6 +37,7 @@ const LoginForm = ({ handleLogin }) => {
         <div>
           <label>password</label>
           <input
+            id="password"
             type="password"
             value={password}
             name="Password"
