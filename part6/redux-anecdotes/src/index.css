@@ -112,3 +112,9 @@ form > button {
 .anecdote-form {
   background-color: rgba(109, 176, 110, .2);
 }
+
+.notification {
+  border: solid 1px;
+  padding: 5px;
+  width: max-content;
+}
