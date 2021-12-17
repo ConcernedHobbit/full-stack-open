@@ -24,39 +24,43 @@ const BlogForm = ({ createBlog }) => {
     setURL('')
   }
 
-  return (<div className='blog-form'>
-    <h2>create new</h2>
-    <form onSubmit={submit}>
-      <div>
-        <label>title</label>
-        <input
-          type="text"
-          name="Blog title"
-          value={title}
-          onChange={handle(setTitle)}
-        />
-      </div>
-      <div>
-        <label>author</label>
-        <input
-          type="text"
-          name="Blog author"
-          value={author}
-          onChange={handle(setAuthor)}
-        />
-      </div>
-      <div>
-        <label>url</label>
-        <input
-          type="text"
-          name="Blog URL"
-          value={url}
-          onChange={handle(setURL)}
-        />
-      </div>
-      <button type="submit">create</button>
-    </form>
-  </div>
+  return (
+    <div className='blog-form'>
+      <h2>create new</h2>
+      <form onSubmit={submit}>
+        <div>
+          <label htmlFor="blog-title">title</label>
+          <input
+            id="blog-title"
+            type="text"
+            name="Blog title"
+            value={title}
+            onChange={handle(setTitle)}
+          />
+        </div>
+        <div>
+          <label htmlFor="blog-author">author</label>
+          <input
+            id="blog-author"
+            type="text"
+            name="Blog author"
+            value={author}
+            onChange={handle(setAuthor)}
+          />
+        </div>
+        <div>
+          <label htmlFor="blog-url">url</label>
+          <input
+            id="blog-url"
+            type="text"
+            name="Blog URL"
+            value={url}
+            onChange={handle(setURL)}
+          />
+        </div>
+        <button type="submit">create</button>
+      </form>
+    </div>
   )
 }
 
