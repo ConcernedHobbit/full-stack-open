@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, handleLike, showRemoveButton, handleRemove }) => {
   const [visible, setVisible] = useState(false)
 
   const toggleVisibility = () => {
@@ -12,23 +12,33 @@ const Blog = ({ blog, handleLike }) => {
     handleLike(blog)
   }
 
+  const remove = (event) => {
+    event.preventDefault()
+    if (window.confirm(`remove ${blog.title || blog.url} by ${blog.author}?`)) {
+      handleRemove(blog)
+    }
+  }
+
+  const header = (
+    <p onClick={toggleVisibility} className='clickable header'>
+      <span className='title'>{blog.title || blog.url}</span> by <span className='author'>{blog.author}</span>
+    </p>
+  )
+
   if (visible) {
     return (
       <div className='blog opened'>
-        <p onClick={toggleVisibility} className='clickable header'>
-          <span className='title'>{blog.title}</span> by <span className='author'>{blog.author}</span> 
-        </p>
+        {header}
         <p>{blog.url}</p>
         <p>{blog.likes} likes <button onClick={like}>like</button></p>
         <p>{blog.user.name}</p>
+        { showRemoveButton && <button onClick={remove}>remove</button> }
       </div>  
     )
   } else {
     return (
       <div className='blog closed'>
-        <p onClick={toggleVisibility} className='clickable header'>
-          <span className='title'>{blog.title}</span> by <span className='author'>{blog.author}</span> 
-        </p>
+        {header}
       </div>
     )
   }

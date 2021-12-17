@@ -95,6 +95,26 @@ const App = () => {
     }
   }
 
+  const handleRemove = async (blog) => {
+    try {
+      await blogService.remove(blog.id)
+      setBlogs(
+        blogs.filter(otherBlog => blog.id !== otherBlog.id)
+      )
+
+      notify({
+        message: `removed blog ${blog.title}`,
+        level: 'success'
+      })
+
+    } catch (exception) {
+      notify({
+        message: 'failed to remove blog',
+        level: 'error'
+      })
+    }
+  }
+
   const logOut = () => {
     window.localStorage.removeItem('logged_in')
     setUser(null)
@@ -109,7 +129,13 @@ const App = () => {
     <div className='blogs'>
       <h2>all blogs</h2>
       {blogs.sort((b1, b2) => b2.likes - b1.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} handleLike={handleLike} />
+        <Blog 
+          key={blog.id} 
+          blog={blog} 
+          handleLike={handleLike} 
+          handleRemove={handleRemove}
+          showRemoveButton={blog.user.username === user.username}
+        />
       )}
     </div>
   )
