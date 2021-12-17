@@ -45,6 +45,13 @@ describe('Blog app', function() {
         localStorage.setItem('logged_in', JSON.stringify(response.body))
       })
 
+      cy.createBlog({
+        title: 'Secrets of Gold',
+        author: 'Nicolas Flamel',
+        url: 'secrets.gold',
+        likes: 0
+      })
+
       cy.visit('http://localhost:3000')
     })
 
@@ -56,6 +63,14 @@ describe('Blog app', function() {
       cy.get('#create-blog').click()
 
       cy.contains('Tales from Hogwarts by The Boy Who Lived')
+    })
+
+    it('a blog can be liked', function() {
+      cy.contains('Secrets of Gold by Nicolas Flamel').click()
+      cy.contains('like').click()
+
+      cy.get('.notification.success').should('contain', 'liked')
+      cy.contains('1 like')
     })
   })
 })
