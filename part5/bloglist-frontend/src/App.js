@@ -11,6 +11,7 @@ const App = () => {
   const [blogTitle, setBlogTitle] = useState('')
   const [blogAuthor, setBlogAuthor] = useState('')
   const [blogURL, setBlogURL] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -47,8 +48,12 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+      setNotification(null)
     } catch (exception) {
-      console.error(exception)
+      notify({
+        message: 'failed to log in',
+        level: 'error'
+      })
     }
   }
 
@@ -66,6 +71,11 @@ const App = () => {
       setBlogTitle('')
       setBlogAuthor('')
       setBlogURL('')
+
+      notify({
+        message: `blog ${blog.title} by ${blog.author} added`,
+        level: 'success'
+      })
     } catch (exception) {
       console.error(exception)
     }
@@ -73,12 +83,16 @@ const App = () => {
 
   const logOut = () => {
     window.localStorage.removeItem('logged_in')
-    window.location.reload();
+    setUser(null)
+
+    notify({
+      message: 'you have been logged out',
+      level: 'success'
+    })
   }
 
   const loginForm = () => (
-    <div>
-      <h2>log in</h2>
+    <div className='login-form'>
       <form onSubmit={handleLogin}>
         <div>
           <label>username</label>
@@ -105,7 +119,7 @@ const App = () => {
 
 
   const blogForm = () => (
-    <div>
+    <div className='blog-form'>
       <h2>create new</h2>
       <form onSubmit={createBlog}>
         <div>
@@ -141,16 +155,45 @@ const App = () => {
   )
 
   const blogList = () => (
-    <div>
+    <div className='blogs'>
+      <h2>all blogs</h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
     </div>
   )
 
+  const notify = ({ message, level, timeout }) => {
+    if (!message) return
+    level = level || 'info'
+    timeout = timeout || 5 * 1000
+
+    setNotification({
+      message,
+      level
+    })
+
+    setTimeout(
+      () => { setNotification(null) },
+      timeout
+    )
+  }
+
+  const notificationArea = () => {
+    if (notification === null) return
+
+    return (
+      <div className={`notification ${notification.level}`}>
+        {notification.message}
+      </div>
+    )
+  }
+
   if (user === null) {
     return (
       <div>
+        <h2>log in</h2>
+        {notificationArea()}
         {loginForm()}
       </div>
     )
@@ -159,6 +202,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      {notificationArea()}
       <p>
         logged in as {user.name}. <button onClick={logOut}>log out</button>
       </p>
