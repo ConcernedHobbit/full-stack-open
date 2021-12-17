@@ -135,18 +135,20 @@ const App = () => {
       )
     }
 
-    <div id='blogs'>
-      <h2>all blogs</h2>
-      {blogs.sort((b1, b2) => b2.likes - b1.likes).map(blog =>
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleLike={handleLike}
-          handleRemove={handleRemove}
-          showRemoveButton={blog.user.username === user.username}
-        />
-      )}
-    </div>
+    return (
+      <div id='blogs'>
+        <h2>all blogs</h2>
+        {blogs.sort((b1, b2) => b2.likes - b1.likes).map(blog =>
+          <Blog
+            key={blog.id}
+            blog={blog}
+            handleLike={handleLike}
+            handleRemove={handleRemove}
+            showRemoveButton={blog.user.username === user.username}
+          />
+        )}
+      </div>
+    )
   }
 
   const notify = ({ message, level, timeout }) => {
