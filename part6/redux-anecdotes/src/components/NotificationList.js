@@ -1,9 +1,9 @@
 import React from 'react'
 import Notification from './Notification'
-import { useSelector } from 'react-redux'
+import { connect } from 'react-redux'
 
-const NotificationList = () =>{
-  const notifications = useSelector(state => state.notifications)
+const NotificationList = (props) =>{
+  const notifications = props.notifications
 
   return (
     <div className='notifications'>
@@ -18,4 +18,13 @@ const NotificationList = () =>{
   )
 }
 
-export default NotificationList
+const mapStateToProps = (state) => {
+  return {
+    notifications: state.notifications
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(NotificationList)
