@@ -78,9 +78,13 @@ body {
     padding: 5px;
 }
 
-.blog-form, .login-form {
+.blogs, .blog-form, .login-form {
+    margin: 5px 0;
     padding: 2px;
     width: max-content;
+}
+
+.blog-form, .login-form {
     background-color: rgba(109, 176, 110, .2);
 }
 
@@ -93,9 +97,27 @@ form div {
 }
 
 .blogs {
-    margin-top: 5px;
     background-color: rgb(216, 213, 213);
+}
+
+.blog {
     width: max-content;
+    border: 1px solid black;
+    margin: 3px 0;
+    padding: 3px;
+    background-color: rgba(255, 255, 255, 0.3)
+}
+
+.blog.opened p.header {
+    font-weight: 600;
+}
+
+.blog span.title {
+    color: rgb(99, 10, 10);
+}
+
+.blog span.author {
+    color: rgb(59, 59, 59)
 }
 
 .notification {
@@ -111,4 +133,8 @@ form div {
 
 .notification.success {
     background-color: rgba(43, 228, 52, 0.2);
+}
+
+.clickable, button {
+    cursor: pointer;
 }
