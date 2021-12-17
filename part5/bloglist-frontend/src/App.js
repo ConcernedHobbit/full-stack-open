@@ -15,7 +15,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -129,10 +129,10 @@ const App = () => {
     <div className='blogs'>
       <h2>all blogs</h2>
       {blogs.sort((b1, b2) => b2.likes - b1.likes).map(blog =>
-        <Blog 
-          key={blog.id} 
-          blog={blog} 
-          handleLike={handleLike} 
+        <Blog
+          key={blog.id}
+          blog={blog}
+          handleLike={handleLike}
           handleRemove={handleRemove}
           showRemoveButton={blog.user.username === user.username}
         />
