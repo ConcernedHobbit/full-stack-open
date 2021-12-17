@@ -44,6 +44,7 @@ blogsRouter.post('/', async (req, res) => {
 
     await user.save()
 
+    await savedBlog.populate('user', { username: 1, name: 1 })
     res.status(201).json(savedBlog.toJSON())
 
 })
@@ -112,6 +113,7 @@ blogsRouter.patch('/:id', async (req, res) => {
     if (body.likes) blog.likes = body.likes
 
     const updatedBlog = await blog.save()
+    await updatedBlog.populate('user', { username: 1, name: 1 })
     res.status(200).json(updatedBlog.toJSON())
 })
 
@@ -154,6 +156,8 @@ blogsRouter.put('/:id', async (req, res) => {
         newBlog,
         { new: true }
     )
+
+    await updatedBlog.populate('user', { username: 1, name: 1 })
     res.status(200).json(updatedBlog)
 })
 

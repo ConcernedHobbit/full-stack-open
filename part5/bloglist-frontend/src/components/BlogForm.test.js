@@ -35,7 +35,6 @@ describe('<BlogForm/>', () => {
       target: { value: blog.url }
     })
 
-
     fireEvent.submit(form)
 
     expect(mockSubmitHandler).toHaveBeenCalledWith({

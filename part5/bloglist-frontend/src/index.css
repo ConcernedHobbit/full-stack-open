@@ -78,13 +78,13 @@ body {
     padding: 5px;
 }
 
-.blogs, .blog-form, .login-form {
+#blogs, #blog-form, #login-form {
     margin: 5px 0;
     padding: 2px;
     width: max-content;
 }
 
-.blog-form, .login-form {
+#blog-form, #login-form {
     background-color: rgba(109, 176, 110, .2);
 }
 
@@ -96,7 +96,7 @@ form div {
     margin-bottom: .2em;
 }
 
-.blogs {
+#blogs {
     background-color: rgb(216, 213, 213);
 }
 

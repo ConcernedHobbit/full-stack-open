@@ -125,8 +125,17 @@ const App = () => {
     })
   }
 
-  const blogList = () => (
-    <div className='blogs'>
+  const blogList = () => {
+    if (blogs.length === 0) {
+      return (
+        <div id='blogs'>
+          <h2>all blogs</h2>
+          <i>no blogs.</i>
+        </div>
+      )
+    }
+
+    <div id='blogs'>
       <h2>all blogs</h2>
       {blogs.sort((b1, b2) => b2.likes - b1.likes).map(blog =>
         <Blog
@@ -138,7 +147,7 @@ const App = () => {
         />
       )}
     </div>
-  )
+  }
 
   const notify = ({ message, level, timeout }) => {
     if (!message) return
