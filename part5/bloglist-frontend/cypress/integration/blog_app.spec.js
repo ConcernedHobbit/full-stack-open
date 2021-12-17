@@ -2,12 +2,17 @@ describe('Blog app', function() {
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
 
-    const user = {
+    cy.createUser({
       name: 'Harry Potter',
       username: 'theboywholived',
       password: 'lily'
-    }
-    cy.request('POST', 'http://localhost:3003/api/users/', user)
+    })
+
+    cy.createUser({
+      name: 'Hermione Granger',
+      username: 'itsleviosah',
+      password: 'houseelves'
+    })
 
     cy.visit('http://localhost:3000')
   })
@@ -38,11 +43,21 @@ describe('Blog app', function() {
 
   describe('When logged in', function() {
     beforeEach(function() {
-      cy.request('POST', 'http://localhost:3003/api/login', {
+      cy.login({
+        username: 'itsleviosah',
+        password: 'houseelves'
+      })
+
+      cy.createBlog({
+        title: 'Shortcuts to Success',
+        author: 'Anonymous Student',
+        url: 'shortcuts.success',
+        likes: 43
+      })
+
+      cy.login({
         username: 'theboywholived',
         password: 'lily'
-      }).then(response => {
-        localStorage.setItem('logged_in', JSON.stringify(response.body))
       })
 
       cy.createBlog({
@@ -71,6 +86,20 @@ describe('Blog app', function() {
 
       cy.get('.notification.success').should('contain', 'liked')
       cy.contains('1 like')
+    })
+
+    it('a blog they created can be removed', function() {
+      cy.contains('Secrets of Gold by Nicolas Flamel').click()
+      cy.contains('remove').click()
+      cy.on('window:confirm', () => true)
+
+      cy.get('.notification.success').should('contain', 'removed')
+      cy.contains('Secrets of Gold by Nicolas Flamel').should('not.exist')
+    })
+
+    it('a blog they did not create cannot be removed', function() {
+      cy.contains('Shortcuts to Success by Anonymous Student').click()
+      cy.contains('remove').should('not.exist')
     })
   })
 })
