@@ -1,0 +1,59 @@
+{
+  "notes": [
+    {
+      "content": "custom-hooks are grat",
+      "id": 1
+    },
+    {
+      "content": "the best featrure ever <3",
+      "id": 2
+    },
+    {
+      "content": "the ultimate hook",
+      "id": 3
+    },
+    {
+      "content": "the greatest hook ever",
+      "id": 4
+    },
+    {
+      "content": "hello world",
+      "id": 5
+    },
+    {
+      "content": "this isa  note",
+      "id": 6
+    },
+    {
+      "content": "this is a note",
+      "id": 7
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "kaltsoon",
+      "number": "045-2323456",
+      "id": 2
+    },
+    {
+      "name": "alfa",
+      "number": "",
+      "id": 3
+    },
+    {
+      "name": "alfa",
+      "number": "omega",
+      "id": 4
+    },
+    {
+      "name": "person",
+      "number": "05430",
+      "id": 5
+    }
+  ]
+}
