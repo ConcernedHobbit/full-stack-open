@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, handleLike, showRemoveButton, handleRemove }) => {
+const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false)
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -10,13 +14,13 @@ const Blog = ({ blog, handleLike, showRemoveButton, handleRemove }) => {
 
   const like = (event) => {
     event.preventDefault()
-    handleLike(blog)
+    dispatch(likeBlog(blog))
   }
 
   const remove = (event) => {
     event.preventDefault()
     if (window.confirm(`remove ${blog.title || blog.url} by ${blog.author}?`)) {
-      handleRemove(blog)
+      dispatch(removeBlog(blog))
     }
   }
 
@@ -26,29 +30,27 @@ const Blog = ({ blog, handleLike, showRemoveButton, handleRemove }) => {
     </p>
   )
 
-  if (visible) {
-    return (
-      <div className='blog opened'>
-        {header}
-        <p>{blog.url}</p>
-        <p><span className="likes">{blog.likes}</span> likes <button onClick={like}>like</button></p>
-        <p>{blog.user.name}</p>
-        { showRemoveButton && <button onClick={remove}>remove</button> }
-      </div>
-    )
-  } else {
+  if (!visible) {
     return (
       <div className='blog closed'>
         {header}
       </div>
     )
   }
+
+  return (
+    <div className='blog opened'>
+      {header}
+      <p>{blog.url}</p>
+      <p><span className="likes">{blog.likes}</span> likes <button onClick={like}>like</button></p>
+      <p>{blog.user.name}</p>
+      { blog.user.username === user.username && <button onClick={remove}>remove</button> }
+    </div>
+  )
 }
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  handleLike: PropTypes.func.isRequired,
-  showRemoveButton: PropTypes.bool,
   handleRemove: PropTypes.func
 }
 

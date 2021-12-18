@@ -72,9 +72,9 @@ describe('Blog app', function() {
 
     it('a blog can be created', function() {
       cy.contains('create new blog').click()
-      cy.get('#blog-title').type('Tales from Hogwarts')
-      cy.get('#blog-author').type('The Boy Who Lived')
-      cy.get('#blog-url').type('talesfrom.hogwarts')
+      cy.get('#title').type('Tales from Hogwarts')
+      cy.get('#author').type('The Boy Who Lived')
+      cy.get('#url').type('talesfrom.hogwarts')
       cy.get('#create-blog').click()
 
       cy.contains('Tales from Hogwarts by The Boy Who Lived')
@@ -102,7 +102,7 @@ describe('Blog app', function() {
       cy.contains('remove').should('not.exist')
     })
 
-    it.only('blogs are sorted by likes', function() {
+    it('blogs are sorted by likes', function() {
       cy.contains('Secrets of Gold by Nicolas Flamel').click()
       cy.contains('Shortcuts to Success by Anonymous Student').click()
 

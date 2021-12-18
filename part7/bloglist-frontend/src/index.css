@@ -78,7 +78,7 @@ body {
     padding: 5px;
 }
 
-#blogs, #blog-form, #login-form {
+#blogs, #blog-form, #login-form, #register-form {
     margin: 5px 0;
     padding: 2px;
     width: max-content;
@@ -86,6 +86,10 @@ body {
 
 #blog-form, #login-form {
     background-color: rgba(109, 176, 110, .2);
+}
+
+#register-form {
+  background-color: rgba(204, 7, 161, 0.2)
 }
 
 form label {

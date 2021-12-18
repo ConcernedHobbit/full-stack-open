@@ -1,27 +1,27 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { createBlog } from '../reducers/blogReducer'
+import { useField } from '../hooks'
 
-const BlogForm = ({ createBlog }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setURL] = useState('')
-
-  const handle = (setter) => (event) => {
-    setter(event.currentTarget.value)
-  }
+const BlogForm = ({ blogFormRef }) => {
+  const title = useField('text', 'title')
+  const author = useField('text', 'author')
+  const url = useField('text', 'url')
+  const dispatch = useDispatch()
 
   const submit = (event) => {
     event.preventDefault()
+    blogFormRef.current.toggleVisibility()
 
-    createBlog({
-      title,
-      author,
-      url
-    })
+    dispatch(createBlog({
+      title: title.value,
+      author: author.value,
+      url: url.value
+    }))
 
-    setTitle('')
-    setAuthor('')
-    setURL('')
+    title.reset()
+    author.reset()
+    url.reset()
   }
 
   return (
@@ -29,43 +29,21 @@ const BlogForm = ({ createBlog }) => {
       <h2>create new</h2>
       <form onSubmit={submit}>
         <div>
-          <label htmlFor="blog-title">title</label>
-          <input
-            id="blog-title"
-            type="text"
-            name="Blog title"
-            value={title}
-            onChange={handle(setTitle)}
-          />
+          <label htmlFor={title.fields.name}>title</label>
+          <input {...title.fields} />
         </div>
         <div>
-          <label htmlFor="blog-author">author</label>
-          <input
-            id="blog-author"
-            type="text"
-            name="Blog author"
-            value={author}
-            onChange={handle(setAuthor)}
-          />
+          <label htmlFor={author.fields.name}>author</label>
+          <input {...author.fields} />
         </div>
         <div>
-          <label htmlFor="blog-url">url</label>
-          <input
-            id="blog-url"
-            type="text"
-            name="Blog URL"
-            value={url}
-            onChange={handle(setURL)}
-          />
+          <label htmlFor={url.fields.name}>url</label>
+          <input {...url.fields} />
         </div>
         <button id="create-blog" type="submit">create</button>
       </form>
     </div>
   )
-}
-
-BlogForm.propTypes = {
-  createBlog: PropTypes.func.isRequired
 }
 
 export default BlogForm

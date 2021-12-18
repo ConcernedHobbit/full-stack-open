@@ -22,7 +22,7 @@ export const createNotification = ({ message, level, timeout }) => {
         message,
         id,
         level,
-        created_at: Date.now()
+        createdAt: Date.now()
       }
     })
 
