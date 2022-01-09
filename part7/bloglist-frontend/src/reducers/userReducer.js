@@ -33,12 +33,13 @@ export const fromStorage = () => {
   }
 }
 
-export const logIn = ({ username, password }) => {
+export const logIn = ({ username, password, history }) => {
   return async dispatch => {
     try {
       const user = await loginService.login({ username, password })
       window.localStorage.setItem('logged_in', JSON.stringify(user))
       blogService.setToken(user.token)
+      history.push('/')
 
       dispatch({
         type: 'LOG_IN',

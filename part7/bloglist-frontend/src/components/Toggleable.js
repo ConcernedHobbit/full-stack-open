@@ -16,15 +16,15 @@ const Toggleable = React.forwardRef((props, ref) => {
 
   if (visible) {
     return (
-      <div>
+      <div className="w-max">
         {props.children}
-        <button onClick={toggleVisibility}>cancel</button>
+        <button onClick={toggleVisibility} className="h-7 bg-red-300 hover:bg-red-400 w-full text-white rounded focus:outline-none focus:shadow-outline">cancel</button>
       </div>
     )
   } else {
     return (
-      <div>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+      <div className="w-max">
+        <button onClick={toggleVisibility} className="h-7 bg-green-300 hover:bg-green-400 w-full px-4 text-white rounded focus:outline-none focus:shadow-outline">{props.buttonLabel}</button>
       </div>
     )
   }

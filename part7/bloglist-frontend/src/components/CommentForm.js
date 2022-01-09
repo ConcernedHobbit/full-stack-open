@@ -20,9 +20,9 @@ const CommentForm = ({ blogId }) => {
 
   return (
     <div>
-      <form onSubmit={submit}>
-        <input {...comment.fields} />
-        <button type="submit">add comment</button>
+      <form onSubmit={submit} className="flex items-center gap-2">
+        <input {...comment.fields} className="my-2 h-8 text-sm shadow border rounded-sm leading-tight focus:outline-none focus:shadow-outline text-gray-700" placeholder="cool blog!" />
+        <button type="submit" className="h-8 text-sm bg-violet-300 hover:bg-violet-500 text-white font-bold px-4 rounded focus:outline-none focus:shadow-outline">add comment</button>
       </form>
     </div>
   )

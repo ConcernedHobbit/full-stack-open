@@ -1,4 +1,5 @@
 import { createNotification } from './notificationReducer'
+import { updateById } from './usersReducer'
 import blogService from '../services/blogs'
 
 const reducer = (state = [], action) => {
@@ -47,6 +48,8 @@ export const createBlog = ({ title, author, url }) => {
         type: 'ADD_BLOG',
         data: blog
       })
+
+      dispatch(updateById(blog.user.id))
 
       dispatch(createNotification({
         message: `blog ${blog.title || blog.url} by ${blog.author} added`,
@@ -124,6 +127,8 @@ export const removeBlog = (blog) => {
         type: 'REMOVE_BLOG',
         data: { id: blog.id }
       })
+
+      dispatch(updateById(blog.user.id))
 
       dispatch(createNotification({
         message: `removed blog ${blog.title}`,

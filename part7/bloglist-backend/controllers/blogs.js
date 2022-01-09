@@ -71,6 +71,7 @@ blogsRouter.post('/:id/comments', async (req, res) => {
                 error: 'no blog found'
             })
     }
+    await blog.populate('user', { username: 1, name: 1 })
 
     res.status(201).json(blog.toJSON())
 })
