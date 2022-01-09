@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { likeBlog, removeBlog } from '../reducers/blogReducer'
 import PropTypes from 'prop-types'
+import CommentForm from './CommentForm'
 
 const Blog = ({ id }) => {
   const dispatch = useDispatch()
@@ -35,6 +36,7 @@ const Blog = ({ id }) => {
       { blog.user.username === user.username && <button onClick={remove}>remove</button> }
 
       <h3>comments</h3>
+      <CommentForm blogId={id} />
       { comments }
     </div>
   )

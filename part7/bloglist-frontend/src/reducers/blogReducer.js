@@ -82,6 +82,32 @@ export const likeBlog = (blog) => {
   }
 }
 
+export const addComment = (id, comment) => {
+  return async dispatch => {
+    try {
+      const updatedBlog = await blogService.comment({
+        id: id,
+        comment: comment
+      })
+
+      dispatch({
+        type: 'UPDATE_BLOG',
+        data: updatedBlog
+      })
+
+      dispatch(createNotification({
+        message: 'added comment',
+        level: 'success'
+      }))
+    } catch (exception) {
+      dispatch(createNotification({
+        message: 'failed to add comment',
+        level: 'error'
+      }))
+    }
+  }
+}
+
 export const removeBlog = (blog) => {
   return async dispatch => {
     try {

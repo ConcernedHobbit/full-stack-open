@@ -50,14 +50,6 @@ blogsRouter.post('/', async (req, res) => {
 })
 
 blogsRouter.post('/:id/comments', async (req, res) => {
-    // if (!req.user) {
-    //     return res
-    //         .status(401)
-    //         .json({
-    //             error: 'token missing or invalid'
-    //         })
-    // }
-
     const body = req.body
     if (!body.comment) {
         return res
@@ -69,7 +61,8 @@ blogsRouter.post('/:id/comments', async (req, res) => {
 
     const blog = await Blog.findByIdAndUpdate(
         req.params.id,
-        { $push: { comments: body.comment } }
+        { $push: { comments: body.comment } },
+        { safe: true, upsert: true, new : true }
     )
     if (!blog) {
         return res
@@ -79,7 +72,7 @@ blogsRouter.post('/:id/comments', async (req, res) => {
             })
     }
 
-    res.status(201).json({ comment: body.comment })
+    res.status(201).json(blog.toJSON())
 })
 
 blogsRouter.delete('/:id', async (req, res) => {
