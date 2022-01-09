@@ -1,27 +1,36 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fromStorage, logOut } from './reducers/userReducer'
+import { Switch, Route, useRouteMatch } from 'react-router-dom'
+
+import { fromStorage } from './reducers/userReducer'
 import { initializeBlogs } from './reducers/blogReducer'
-import BlogList from './components/BlogList'
+import { initializeUsers } from './reducers/usersReducer'
+
+import Header from './components/Header'
+import Users from './components/Users'
+import User from './components/User'
+import Blogs from './components/Blogs'
+import Blog from './components/Blog'
+
+import NotificationList from './components/NotificationList'
 import LoginForm from './components/LoginForm'
 import RegisterForm from './components/RegisterForm'
-import BlogForm from './components/BlogForm'
-import Toggleable from './components/Toggleable'
-import NotificationList from './components/NotificationList'
 
 const App = () => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
+
   const blogFormRef = useRef()
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
     dispatch(fromStorage())
   }, [])
 
-  const handleLogOut = () => {
-    dispatch(logOut())
-  }
+  const defaultMatch = { params: { id: '0' } }
+  const userMatch = useRouteMatch('/users/:id') || defaultMatch
+  const blogMatch = useRouteMatch('/blogs/:id') || defaultMatch
 
   if (!user.loggedIn) {
     return (
@@ -33,17 +42,24 @@ const App = () => {
     )
   }
 
+
   return (
     <div>
-      <h2>blogs</h2>
-      <NotificationList amount={1} />
-      <p>
-        logged in as {user.name}. <button onClick={handleLogOut}>log out</button>
-      </p>
-      <Toggleable buttonLabel='create new blog' ref={blogFormRef}>
-        <BlogForm blogFormRef={blogFormRef} />
-      </Toggleable>
-      <BlogList />
+      <Header user={user} />
+      <Switch>
+        <Route path='/users/:id'>
+          <User id={userMatch?.params.id} />
+        </Route>
+        <Route path='/users'>
+          <Users />
+        </Route>
+        <Route path='/blogs/:id'>
+          <Blog id={blogMatch?.params.id} />
+        </Route>
+        <Route path='/'>
+          <Blogs blogFormRef={blogFormRef} />
+        </Route>
+      </Switch>
     </div>
   )
 }

@@ -49,6 +49,39 @@ blogsRouter.post('/', async (req, res) => {
 
 })
 
+blogsRouter.post('/:id/comments', async (req, res) => {
+    // if (!req.user) {
+    //     return res
+    //         .status(401)
+    //         .json({
+    //             error: 'token missing or invalid'
+    //         })
+    // }
+
+    const body = req.body
+    if (!body.comment) {
+        return res
+            .status(400)
+            .json({
+                error: 'no comment provided'
+            })
+    }
+
+    const blog = await Blog.findByIdAndUpdate(
+        req.params.id,
+        { $push: { comments: body.comment } }
+    )
+    if (!blog) {
+        return res
+            .status(404)
+            .json({
+                error: 'no blog found'
+            })
+    }
+
+    res.status(201).json({ comment: body.comment })
+})
+
 blogsRouter.delete('/:id', async (req, res) => {
     if (!req.user) {
         return res
