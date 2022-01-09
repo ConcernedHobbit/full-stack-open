@@ -19,11 +19,18 @@ const reducer = (state = [], action) => {
 
 export const initializeBlogs = () => {
   return async dispatch => {
-    const blogs = await blogService.getAll()
-    dispatch({
-      type: 'INIT_BLOGS',
-      data: blogs
-    })
+    try {
+      const blogs = await blogService.getAll()
+      dispatch({
+        type: 'INIT_BLOGS',
+        data: blogs
+      })
+    } catch (exception) {
+      dispatch(createNotification({
+        message: 'failed to load blogs',
+        level: 'error'
+      }))
+    }
   }
 }
 

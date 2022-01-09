@@ -1,4 +1,5 @@
 import userService from '../services/users'
+import { createNotification } from './notificationReducer'
 
 const reducer = (state = [], action) => {
   switch(action.type) {
@@ -14,11 +15,18 @@ const reducer = (state = [], action) => {
 
 export const initializeUsers = () => {
   return async dispatch => {
-    const users = await userService.getAll()
-    dispatch({
-      type: 'INIT_USERS',
-      data: users
-    })
+    try {
+      const users = await userService.getAll()
+      dispatch({
+        type: 'INIT_USERS',
+        data: users
+      })
+    } catch (exception) {
+      dispatch(createNotification({
+        message: 'failed to load users',
+        level: 'error'
+      }))
+    }
   }
 }
 
