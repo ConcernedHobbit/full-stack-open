@@ -15,10 +15,17 @@ export const ALL_BOOKS = gql`
     allBooks {
       title
       published
+      genres
       author {
         name
       }
     }
+  }
+`
+
+export const ALL_GENRES = gql`
+  query {
+    allGenres
   }
 `
 
