@@ -16,7 +16,7 @@ const LoginForm = ({ show, setPage, setToken, setError }) => {
     if (result.data) {
       const token = result.data.login.value
       setToken(token)
-      setPage('authors')
+      setPage('recommended')
 
       localStorage.setItem('library-user-token', token)
     }

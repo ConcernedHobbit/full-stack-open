@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useQuery } from '@apollo/client'
 import { ALL_BOOKS } from '../queries'
+import BookList from './BookList'
 
 const FilterMenu = ({ genres, filter, setFilter }) => {
   if (!genres) {
@@ -59,26 +60,7 @@ const Books = (props) => {
   return (
     <div>
       <h2>books</h2>
-      <table>
-        <tbody>
-          <tr>
-            <th></th>
-            <th>
-              author
-            </th>
-            <th>
-              published
-            </th>
-          </tr>
-          {books.filter(byGenre).map(a =>
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author.name}</td>
-              <td>{a.published}</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      <BookList books={books.filter(byGenre)} />
 
       <FilterMenu 
         genres={genres}

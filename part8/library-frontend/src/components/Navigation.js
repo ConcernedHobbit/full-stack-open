@@ -29,6 +29,7 @@ const Navigation = ({ setPage, setToken, loggedIn }) => {
 
   return (
     <div>
+      <button onClick={() => setPage('recommended')}>recommended</button>
       <CommonNavigation setPage={setPage} />
       <button onClick={() => setPage('add')}>add book</button>
       <button onClick={logout}>logout</button>  

@@ -5,6 +5,7 @@ import LoginForm from './components/LoginForm'
 import Navigation from './components/Navigation'
 import NewBook from './components/NewBook'
 import Notification from './components/Notification'
+import Recommended from './components/Recommended'
 
 const App = () => {
   const [page, setPage] = useState('authors')
@@ -25,6 +26,10 @@ const App = () => {
       />
 
       <Notification message={errorMessage} />
+
+      <Recommended 
+        show={page === 'recommended'}
+      />
 
       <Authors
         show={page === 'authors'}
