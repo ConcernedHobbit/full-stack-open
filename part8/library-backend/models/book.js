@@ -3,9 +3,9 @@ const mongoose = require('mongoose')
 const schema = new mongoose.Schema({
   title: {
     type: String,
-    required: true,
-    unique: true,
-    minlength: 2
+    required: [true, 'Title is required.'],
+    unique: [true, 'Title must be unique.'],
+    minlength: [2, 'Title must be at least 2 characters.']
   },
   published: {
     type: Number,
