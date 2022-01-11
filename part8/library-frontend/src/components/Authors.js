@@ -19,7 +19,8 @@ const Authors = ({ show, loggedIn, setError }) => {
     )
   }
 
-  const authors = result.data.allAuthors
+  const alphabetically = (a, b) => a.name.localeCompare(b.name)
+  const authors = [...result.data.allAuthors].sort(alphabetically)
 
   return (
     <div>
@@ -27,7 +28,9 @@ const Authors = ({ show, loggedIn, setError }) => {
       <table>
         <tbody>
           <tr>
-            <th></th>
+            <th>
+              name
+            </th>
             <th>
               born
             </th>

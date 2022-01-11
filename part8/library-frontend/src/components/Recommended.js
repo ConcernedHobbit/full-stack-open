@@ -9,14 +9,14 @@ const Recommended = ({ show }) => {
   const result = useQuery(CURRENT_USER)
 
   useEffect(() => {
-    if (result.data) {
-      getBooks({ variables: { genre: result.data.me.favoriteGenre } })
-    }
-  }, [result.data]) // eslint-disable-line
-
-  useEffect(() => {
     if (bookResult.data) {
       setBooks(bookResult.data.allBooks)
+    }
+  }, [bookResult.data]) // eslint-disable-line
+
+  useEffect(() => {
+    if (result.data && result.data.me) {
+      getBooks({ variables: { genre: result.data.me.favoriteGenre } })
     }
   }, [result.data]) // eslint-disable-line
 

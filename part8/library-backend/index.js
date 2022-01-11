@@ -129,7 +129,9 @@ const resolvers = {
       let author = await Author.findOne({ name: args.name })
   
       if (!author) {
-        return null
+        throw new UserInputError('No such author', {
+          invalidArgs: args.name
+        })
       }
       
       author.born = args.setBornTo
