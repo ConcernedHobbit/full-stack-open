@@ -31,7 +31,7 @@ class BMIMapping {
   }
 }
 
-const categories: Array<BMIMapping> = [
+const mappings: Array<BMIMapping> = [
   new BMIMapping("Underweight (Severe thinness)", undefined, 16),
   new BMIMapping("Underweight (Moderate thinness)", 16, 17),
   new BMIMapping("Underweight (Mild thinness)", 17, 18.5),
@@ -46,7 +46,7 @@ function calculateBmi(height: number, weight: number): BMICategory {
   const meterHeight = height / 100;
   const bmi = weight / (meterHeight * meterHeight);
 
-  for (const mapping of categories) {
+  for (const mapping of mappings) {
     if (mapping.contains(bmi)) {
       return mapping.category;
     }
