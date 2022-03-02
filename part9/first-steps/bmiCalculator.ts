@@ -82,7 +82,9 @@ try {
   const { weight, height } = parseBMIArguments(process.argv);
   console.log(calculateBmi(height, weight));
 } catch (error) {
-  console.error(error.message);
+  if (error instanceof Error) {
+    console.error(error.message);
+  }
   console.error(`Usage:
     bmiCalculator <height (cm)> <weight (kg)>`);
 }
