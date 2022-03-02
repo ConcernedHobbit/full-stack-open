@@ -1,4 +1,4 @@
-type BMICategory =
+export type BMICategory =
   | "Underweight (Severe thinness)"
   | "Underweight (Moderate thinness)"
   | "Underweight (Mild thinness)"
@@ -42,7 +42,7 @@ const mappings: Array<BMIMapping> = [
   new BMIMapping("Obese (Class III)", 40, undefined),
 ];
 
-function calculateBmi(height: number, weight: number): BMICategory {
+export function calculateBmi(height: number, weight: number): BMICategory {
   const meterHeight = height / 100;
   const bmi = weight / (meterHeight * meterHeight);
 
