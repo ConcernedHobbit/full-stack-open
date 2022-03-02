@@ -1,4 +1,4 @@
-interface ExercisePeriod {
+export interface ExercisePeriod {
   periodLength: number;
   trainingDays: number;
   success: boolean;
@@ -14,7 +14,7 @@ const descriptions = [
   "great success!",
 ];
 
-function calculateExercises(
+export function calculateExercises(
   dailyExerciseHours: Array<number>,
   target: number
 ): ExercisePeriod {
