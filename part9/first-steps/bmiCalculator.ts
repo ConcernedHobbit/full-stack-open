@@ -55,4 +55,34 @@ function calculateBmi(height: number, weight: number): BMICategory {
   throw new Error(`Unclassified BMI of ${bmi}`);
 }
 
-console.log(calculateBmi(180, 74));
+// CLI handling
+interface BMIValues {
+  height: number;
+  weight: number;
+}
+
+function parseBMIArguments(args: Array<string>): BMIValues {
+  if (args.length < 4) throw new Error("Too few arguments");
+  if (args.length > 4) throw new Error("Too many arguments");
+
+  const height = Number(args[2]);
+  const weight = Number(args[3]);
+
+  if (!isNaN(weight) && !isNaN(height)) {
+    return {
+      height,
+      weight,
+    };
+  }
+
+  throw new Error("Invalid values provided");
+}
+
+try {
+  const { weight, height } = parseBMIArguments(process.argv);
+  console.log(calculateBmi(height, weight));
+} catch (error) {
+  console.error(error.message);
+  console.error(`Usage:
+    bmiCalculator <height (cm)> <weight (kg)>`);
+}

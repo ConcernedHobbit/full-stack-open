@@ -47,4 +47,33 @@ function calculateExercises(
   };
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
+// CLI handling
+interface ExerciseValues {
+  dailyExerciseHours: Array<number>;
+  target: number;
+}
+
+function parseExerciseArguments(args: Array<string>): ExerciseValues {
+  if (args.length < 4) throw new Error("Too few arguments");
+
+  const target = Number(args[2]);
+  const dailyExerciseHours = args.slice(3).map(Number);
+
+  if (dailyExerciseHours.some((num) => isNaN(num))) {
+    throw new Error("Invalid value in daily exercise hours");
+  }
+
+  return {
+    dailyExerciseHours,
+    target,
+  };
+}
+
+try {
+  const { dailyExerciseHours, target } = parseExerciseArguments(process.argv);
+  console.log(calculateExercises(dailyExerciseHours, target));
+} catch (error) {
+  console.error(error.message);
+  console.error(`Usage:
+  calculateExercise <target (h)> <daily exercise hours, seperated by space>`);
+}
