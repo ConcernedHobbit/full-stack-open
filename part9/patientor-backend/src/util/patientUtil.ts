@@ -41,7 +41,8 @@ export function toNewPatient({ name, ssn, dateOfBirth, gender, occupation }: Fie
     ssn: parseString(ssn),
     dateOfBirth: parseString(dateOfBirth),
     gender: parseGender(gender),
-    occupation: parseString(occupation)
+    occupation: parseString(occupation),
+    entries: []
   };
 
   return newPatient;
