@@ -1,5 +1,5 @@
 import patients from "../../data/patients";
-import { NewPatient, NonSensitivePatient } from "../types";
+import { Patient, NewPatient, NonSensitivePatient } from "../types";
 import { toNonSensitive } from "../util/patientUtil";
 import uuid = require("uuid");
 
@@ -7,10 +7,9 @@ export function getPatients(): Array<NonSensitivePatient> {
   return patients.map(toNonSensitive);
 }
 
-export function findById(id: NonSensitivePatient["id"]): NonSensitivePatient | undefined {
+export function findById(id: Patient["id"]): Patient | undefined {
   const patient = patients.find(p => p.id === id);
-  if (!patient) return undefined;
-  return toNonSensitive(patient);
+  return patient;
 }
 
 export function addPatient(patient: NewPatient): NonSensitivePatient {

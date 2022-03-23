@@ -10,6 +10,8 @@ export enum Gender {
   Other = 'other'
 }
 
+export type Entry = Record<string, never>;
+
 export type Patient = {
   id: string;
   name: string;
@@ -17,7 +19,8 @@ export type Patient = {
   ssn: string;
   gender: Gender;
   occupation: string;
+  entries: Entry[];
 };
 
 export type NewPatient = Omit<Patient, "id">;
-export type NonSensitivePatient = Omit<Patient, "ssn">;
+export type NonSensitivePatient = Omit<Patient, "ssn" | "entries">;
