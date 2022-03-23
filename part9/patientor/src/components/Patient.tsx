@@ -1,5 +1,7 @@
 import { Avatar, Card, CardContent, CardHeader, Typography } from "@material-ui/core";
 import { Patient as PatientType } from "../types";
+import WorkIcon from "@material-ui/icons/Work";
+import CakeIcon from "@material-ui/icons/Cake";
 
 const Patient = ({ patient }: { patient: PatientType }) => {
   return (
@@ -22,13 +24,16 @@ const Patient = ({ patient }: { patient: PatientType }) => {
           </Typography>
         }
       />
+
       <CardContent>
-        <Typography>
-          Born {patient.dateOfBirth}
+        <Typography style={{ display: "flex", alignItems: "center" }}>
+          <CakeIcon style={{ marginRight: ".5rem" }} aria-label="Birthday" />
+          {patient.dateOfBirth}
         </Typography>
 
-        <Typography>
-          Occupation: {patient.occupation}
+        <Typography style={{ display: "flex", alignItems: "center" }}>
+          <WorkIcon style={{ marginRight: ".5rem" }} aria-label="Occupation" /> 
+          {patient.occupation}
         </Typography>
       </CardContent>
     </Card>
