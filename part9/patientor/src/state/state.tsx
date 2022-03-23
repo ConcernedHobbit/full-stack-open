@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { Patient } from "../types";
-
 import { Action } from "./reducer";
 
 export type State = {
@@ -32,4 +31,5 @@ export const StateProvider = ({
     </StateContext.Provider>
   );
 };
+
 export const useStateValue = () => useContext(StateContext);

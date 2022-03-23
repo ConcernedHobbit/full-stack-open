@@ -2,8 +2,8 @@ import React from "react";
 import axios from "axios";
 import { Box, Table, Button, TableHead, Typography } from "@material-ui/core";
 
-import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
-import AddPatientModal from "../AddPatientModal";
+import { PatientFormValues } from "../components/AddPatientModal/AddPatientForm";
+import AddPatientModal from "../components/AddPatientModal";
 import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";
@@ -46,7 +46,7 @@ const PatientListPage = () => {
   };
 
   return (
-    <div className="App">
+    <div className="App" style={{ marginTop: "2em" }}>
       <Box>
         <Typography align="center" variant="h6">
           Patient list
@@ -59,20 +59,22 @@ const PatientListPage = () => {
             <TableCell>Gender</TableCell>
             <TableCell>Occupation</TableCell>
             <TableCell>Health Rating</TableCell>
+            <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {Object.values(patients).map((patient: Patient) => (
             <TableRow key={patient.id}>
-              <TableCell>
-                <Link to={`/patients/${patient.id}`}>
-                  {patient.name}
-                </Link>
-              </TableCell>
+              <TableCell>{patient.name}</TableCell>
               <TableCell>{patient.gender}</TableCell>
               <TableCell>{patient.occupation}</TableCell>
               <TableCell>
                 <HealthRatingBar showText={false} rating={1} />
+              </TableCell>
+              <TableCell>
+                <Button component={Link} to={`/patients/${patient.id}`} variant="contained">
+                  View
+                </Button>
               </TableCell>
             </TableRow>
           ))}
