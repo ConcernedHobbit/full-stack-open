@@ -8,6 +8,17 @@ require('dotenv').config()
 
 const JWT_SECRET = process.env.SECRET
 const MONGODB_URI = process.env.MONGODB_URI
+
+if (!MONGODB_URI) {
+  console.error('No MONGODB_URI in environment')
+  process.exit(1)
+}
+
+if (!JWT_SECRET) {
+  console.error('No SECRET in environment')
+  process.exit(1)
+}
+
 console.log(`Connecting to MongoDB @ ${MONGODB_URI}`)
 
 mongoose.connect(MONGODB_URI)
@@ -16,6 +27,7 @@ mongoose.connect(MONGODB_URI)
   })
   .catch((error) => {
     console.log(`Error connecting to MongoDB: ${error.message}`)
+    process.exit(1)
   })
 
 const typeDefs = gql`
