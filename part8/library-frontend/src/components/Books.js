@@ -12,13 +12,22 @@ const FilterMenu = ({ filter, setFilter }) => {
     flexWrap: 'wrap'
   }
 
-  const result = useQuery(ALL_GENRES)
+  const [getGenres, result] = useLazyQuery(ALL_GENRES)
+
+  useEffect(getGenres, [getGenres])
+
+  useEffect(() => {
+    if (filter === null) {
+      getGenres()
+    }
+  }, [filter, getGenres]) 
   
-  if (result.loading) {
+  const genres = result.data?.allGenres
+
+  if (!genres) {
     return <div style={style}>loading...</div>
   }
 
-  const genres = result.data.allGenres
 
   return (
     <div style={style}>
@@ -55,6 +64,11 @@ const Books = (props) => {
       <div>
         <h2>books</h2>
         <p>loading...</p>
+
+        <FilterMenu
+        filter={filter}
+        setFilter={setFilter} 
+      />
       </div>
     )
   }
