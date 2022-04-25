@@ -1,13 +1,9 @@
-import React, { useState } from 'react'
-import { useQuery } from '@apollo/client'
-import { ALL_BOOKS } from '../queries'
+import React, { useEffect, useState } from 'react'
+import { useQuery, useLazyQuery } from '@apollo/client'
+import { ALL_BOOKS, ALL_GENRES, BOOKS_BY_GENRE } from '../queries'
 import BookList from './BookList'
 
-const FilterMenu = ({ genres, filter, setFilter }) => {
-  if (!genres) {
-    return null
-  }
-
+const FilterMenu = ({ filter, setFilter }) => {
   const style = {
     position: 'absolute',
     bottom: '1rem',
@@ -15,6 +11,14 @@ const FilterMenu = ({ genres, filter, setFilter }) => {
     gap: '.25rem',
     flexWrap: 'wrap'
   }
+
+  const result = useQuery(ALL_GENRES)
+  
+  if (result.loading) {
+    return <div style={style}>loading...</div>
+  }
+
+  const genres = result.data.allGenres
 
   return (
     <div style={style}>
@@ -30,14 +34,23 @@ const FilterMenu = ({ genres, filter, setFilter }) => {
 }
 
 const Books = (props) => {
-  const result = useQuery(ALL_BOOKS)
+  const allBooks = useQuery(ALL_BOOKS)
+  const [getBooks, genreBooks] = useLazyQuery(BOOKS_BY_GENRE)
   const [filter, setFilter] = useState(null)
+
+  useEffect(() => {
+    if (!filter) {
+      // Refetch allBooks?
+    } else {
+      getBooks({ variables: { genre: filter } })
+    }
+  }, [filter, getBooks])
 
   if (!props.show) {
     return null
   }
 
-  if (result.loading) {
+  if (allBooks.loading || genreBooks.loading) {
     return (
       <div>
         <h2>books</h2>
@@ -46,24 +59,12 @@ const Books = (props) => {
     )
   }
 
-  const books = result.data.allBooks
-  const genres = [
-    ...new Set(
-      books
-        .map(book => book.genres)
-        .reduce((assimilate, host) => host.concat(assimilate), [])    
-    )
-  ]
-
-  const byGenre = (book) => filter ? book.genres.includes(filter) : true
-
   return (
     <div>
       <h2>books</h2>
-      <BookList books={books.filter(byGenre)} />
+      <BookList books={filter && genreBooks.data ? genreBooks.data.allBooks : allBooks.data.allBooks} />
 
-      <FilterMenu 
-        genres={genres}
+      <FilterMenu
         filter={filter}
         setFilter={setFilter} 
       />
