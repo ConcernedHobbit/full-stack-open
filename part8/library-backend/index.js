@@ -59,6 +59,7 @@ const typeDefs = gql`
   type Query {
     allBooks(author: String, genre: String): [Book]!
     allAuthors: [Author]!
+    allGenres: [String]!
     bookCount: Int!
     authorCount: Int!
     me: User
@@ -93,6 +94,14 @@ const resolvers = {
       return Book.find({})
     },
     allAuthors: () => Author.find({}),
+    allGenres: async () => {
+      const books = await Book.find({}).select({ "genres": 1, "_id": 0 })
+      return new Set(
+        books
+          .map(book => book.genres)
+          .reduce((assimilate, host) => host.concat(assimilate), [])
+      )
+    },
     bookCount: () => Book.collection.countDocuments(),
     authorCount: () => Author.collection.countDocuments(),
     me: (root, args, context) => context.currentUser
