@@ -11,10 +11,16 @@ const App = () => {
   const [page, setPage] = useState('authors')
   const [token, setToken] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [infoMessage, setInfoMessage] = useState(null)
 
-  const flashMessage = (message) => {
+  const flashError = (message) => {
     setErrorMessage(message)
     setTimeout(() => setErrorMessage(null), 5000)
+  }
+
+  const flashInfo = (message) => {
+    setInfoMessage(message)
+    setTimeout(() => setInfoMessage(null), 5000)
   }
 
   return (
@@ -26,6 +32,7 @@ const App = () => {
       />
 
       <Notification message={errorMessage} />
+      <Notification message={infoMessage} color='blue' />
 
       <Recommended 
         show={page === 'recommended'}
@@ -33,24 +40,25 @@ const App = () => {
 
       <Authors
         show={page === 'authors'}
-        setError={flashMessage}
+        setError={flashError}
         loggedIn={token !== null}
       />
 
       <Books
         show={page === 'books'}
+        flash={flashInfo}
       />
 
       <NewBook
         show={page === 'add'}
-        setError={flashMessage}
+        setError={flashError}
       />
 
       <LoginForm
         show={page === 'login'}
         setPage={setPage}
         setToken={setToken}
-        setError={flashMessage}
+        setError={flashError}
       />
     </div>
   )
