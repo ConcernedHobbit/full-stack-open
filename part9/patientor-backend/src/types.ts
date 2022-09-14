@@ -5,15 +5,15 @@ export type Diagnose = {
 };
 
 export enum Gender {
-  Male = 'male',
-  Female = 'female',
-  Other = 'other'
+  Male = "male",
+  Female = "female",
+  Other = "other",
 }
 
 type BaseEntry = {
   id: string;
   specialist: string;
-  diagnosisCodes?: Diagnose['code'][];
+  diagnosisCodes?: Diagnose["code"][];
   description: string;
   date: string;
 };
@@ -22,7 +22,7 @@ export enum HealthCheckRating {
   "Healthy" = 0,
   "LowRisk" = 1,
   "HighRisk" = 2,
-  "CriticalRisk" = 3
+  "CriticalRisk" = 3,
 }
 
 interface HealthCheckEntry extends BaseEntry {

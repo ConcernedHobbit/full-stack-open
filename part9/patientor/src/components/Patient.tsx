@@ -10,12 +10,9 @@ import {
 import { Patient as PatientType } from "../types";
 import WorkIcon from "@material-ui/icons/Work";
 import CakeIcon from "@material-ui/icons/Cake";
-import Diagnose from "./Diagnose";
-import { useStateValue } from "../state";
+import EntryDetails from "./EntryDetails";
 
 const Patient = ({ patient }: { patient: PatientType }) => {
-  const [{ diagnoses }] = useStateValue();
-
   return (
     <>
       <Card>
@@ -47,23 +44,7 @@ const Patient = ({ patient }: { patient: PatientType }) => {
           <Grid container spacing={2}>
             {patient.entries.map((entry) => (
               <Grid item key={entry.id} xs>
-                <Card>
-                  <CardHeader
-                    title={entry.date}
-                    subheader={<Typography>{entry.specialist}</Typography>}
-                  />
-                  <CardContent>
-                    <Typography>{entry.description}</Typography>
-                    {entry.diagnosisCodes &&
-                      entry.diagnosisCodes.map((code) => (
-                        <Diagnose
-                          key={code}
-                          code={code}
-                          diagnose={diagnoses[code]}
-                        />
-                      ))}
-                  </CardContent>
-                </Card>
+                <EntryDetails entry={entry} />
               </Grid>
             ))}
           </Grid>
