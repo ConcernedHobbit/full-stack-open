@@ -4,15 +4,18 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Chip,
   Grid,
   Typography,
 } from "@material-ui/core";
 import { Patient as PatientType } from "../types";
 import WorkIcon from "@material-ui/icons/Work";
 import CakeIcon from "@material-ui/icons/Cake";
+import Diagnose from "./Diagnose";
+import { useStateValue } from "../state";
 
 const Patient = ({ patient }: { patient: PatientType }) => {
+  const [{ diagnoses }] = useStateValue();
+
   return (
     <>
       <Card>
@@ -53,7 +56,11 @@ const Patient = ({ patient }: { patient: PatientType }) => {
                     <Typography>{entry.description}</Typography>
                     {entry.diagnosisCodes &&
                       entry.diagnosisCodes.map((code) => (
-                        <Chip key={code} label={code} variant="outlined" />
+                        <Diagnose
+                          key={code}
+                          code={code}
+                          diagnose={diagnoses[code]}
+                        />
                       ))}
                   </CardContent>
                 </Card>
